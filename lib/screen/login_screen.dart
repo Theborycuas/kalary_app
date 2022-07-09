@@ -21,20 +21,37 @@ class LoginScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
-                height: 50,
+                height: 20,
+              ),
+              // FadeInImage(
+              //   image: NetworkImage(
+              //       'https://marketing4ecommerce.net/wp-content/uploads/2018/01/Depositphotos_3667865_m-2015-compressor.jpg'),
+              //   placeholder: const AssetImage('assets/img/jar-loading.gif'),
+              //   width: double.infinity,
+              //   height: 190.00,
+              //   fit: BoxFit.cover,
+              //   fadeInDuration: const Duration(milliseconds: 300),
+              // ),
+              Container(
+                alignment: Alignment.center,
+                child: const Image(
+                  image: AssetImage('assets/img/logokalary.png'),
+                  width: 150,
+                  height: 150,
+                ),
               ),
               Container(
                 alignment: Alignment.center,
                 child: const Text(
-                  'Logo',
+                  'K LARY',
                   style: TextStyle(
-                      color: Colors.red,
+                      color: Colors.black,
                       fontSize: 30,
                       fontWeight: FontWeight.bold),
                 ),
               ),
               const SizedBox(
-                height: 50,
+                height: 30,
               ),
               const Text(
                 'Iniciar Sesión',
@@ -44,7 +61,7 @@ class LoginScreen extends StatelessWidget {
                     fontWeight: FontWeight.w500),
               ),
               const SizedBox(
-                height: 50,
+                height: 20,
               ),
 
               ///EMAIL

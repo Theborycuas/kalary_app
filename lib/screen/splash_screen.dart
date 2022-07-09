@@ -9,17 +9,40 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Timer(const Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 15), () {
       Get.to(LoginScreen());
     });
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.blue,
-      body: Center(
-        child: Text(
-          'Logo',
-          style: TextStyle(
-              color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Center(
+            child: Text(
+              'BIENVENIDOS A',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          Center(
+            child: Image(
+              image: AssetImage('assets/img/logokalary.png'),
+              width: 200,
+              height: 200,
+            ),
+          ),
+          Center(
+            child: Text(
+              'K LARY',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
       ),
     );
   }

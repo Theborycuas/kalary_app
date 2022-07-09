@@ -36,7 +36,7 @@ class SocialIconLoginScreen extends StatelessWidget {
                         )
                       ]),
                   child: SvgPicture.asset(
-                    'assets/images/google.svg',
+                    'assets/img/google.svg',
                     height: 50,
                   ),
                 ),
@@ -48,21 +48,20 @@ class SocialIconLoginScreen extends StatelessWidget {
               ///FACEBOOK
               Expanded(
                 child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(6),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 10,
-                        )
-                      ]),
-                  child: SvgPicture.asset(
-                    'assets/images/google.svg',
-                    height: 50,
-                  ),
-                ),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(6),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 10,
+                          )
+                        ]),
+                    child: Image.asset(
+                      'assets/img/facebookpng.png',
+                      width: 50,
+                    )),
               ),
             ],
           ),
