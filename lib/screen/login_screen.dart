@@ -71,8 +71,9 @@ class LoginScreen extends StatelessWidget {
 
               ///Button
               const ButtonGlobalScreen(),
+
               const SizedBox(
-                height: 10,
+                height: 15,
               ),
 
               ///Social Login Icon
@@ -80,6 +81,23 @@ class LoginScreen extends StatelessWidget {
             ],
           ),
         )),
+      ),
+      bottomNavigationBar: Container(
+        height: 50,
+        color: Colors.white,
+        alignment: Alignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text('¿No tienes una cuenta? '),
+            InkWell(
+              child: Text(
+                'Registrate',
+                style: TextStyle(color: Colors.red),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

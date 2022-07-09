@@ -16,18 +16,56 @@ class SocialIconLoginScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          height: 15,
+          height: 25,
         ),
-        Row(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              child: SvgPicture.asset(
-                'assets/images/google.svg',
-                height: 30,
+        Container(
+          width: MediaQuery.of(context).size.width * 0.6,
+          child: Row(
+            children: [
+              ///GOOGLE
+              Expanded(
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(6),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 10,
+                        )
+                      ]),
+                  child: SvgPicture.asset(
+                    'assets/images/google.svg',
+                    height: 50,
+                  ),
+                ),
               ),
-            )
-          ],
+              const SizedBox(
+                width: 15,
+              ),
+
+              ///FACEBOOK
+              Expanded(
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(6),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 10,
+                        )
+                      ]),
+                  child: SvgPicture.asset(
+                    'assets/images/google.svg',
+                    height: 50,
+                  ),
+                ),
+              ),
+            ],
+          ),
         )
       ],
     );
