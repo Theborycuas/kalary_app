@@ -84,22 +84,26 @@ class LoginScreen extends StatelessWidget {
                       height: 20,
                     ),
                     TextFormGlobalScreen(
-                        controller: emailController,
-                        text: 'Email',
-                        textInputType: TextInputType.emailAddress,
-                        obscure: false,
-                        icon: Icons.email),
+                      controller: emailController,
+                      text: 'Email',
+                      textInputType: TextInputType.emailAddress,
+                      obscure: false,
+                      icon: Icons.email,
+                      textCap: TextCapitalization.words,
+                    ),
                     const SizedBox(
                       height: 10,
                     ),
 
                     ///Password
                     TextFormGlobalScreen(
-                        controller: passwordController,
-                        text: 'Password',
-                        textInputType: TextInputType.visiblePassword,
-                        obscure: true,
-                        icon: Icons.password),
+                      controller: passwordController,
+                      text: 'Password',
+                      textInputType: TextInputType.visiblePassword,
+                      obscure: true,
+                      icon: Icons.password,
+                      textCap: TextCapitalization.words,
+                    ),
                     const SizedBox(
                       height: 15,
                     ),

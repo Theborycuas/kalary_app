@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
@@ -7,8 +8,31 @@ import '../witgets/text_form.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({Key? key}) : super(key: key);
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confpasswordController = TextEditingController();
+  final firebase = FirebaseFirestore.instance;
+
+  Future userRegister() async {
+    try {
+      await firebase.collection('users_db').doc().set({
+        'name': nameController.text,
+        'phone': phoneController.text,
+        'email': emailController.text,
+        'password': passwordController.text
+      });
+      print('Información enviada');
+      nameController.text = "";
+      phoneController.text = "";
+      emailController.text = "";
+      passwordController.text = "";
+      confpasswordController.text = "";
+    } catch (e) {
+      print('ERRROR.... ' + e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,61 +94,73 @@ class RegisterScreen extends StatelessWidget {
 
               ///EMAIL
               TextFormGlobalScreen(
-                  controller: emailController,
-                  text: 'Nombres',
-                  textInputType: TextInputType.emailAddress,
-                  obscure: false,
-                  icon: Icons.person),
+                controller: nameController,
+                text: 'Nombres',
+                textInputType: TextInputType.name,
+                obscure: false,
+                icon: Icons.person,
+                textCap: TextCapitalization.words,
+              ),
               const SizedBox(
                 height: 10,
               ),
 
               ///EMAIL
               TextFormGlobalScreen(
-                  controller: emailController,
-                  text: 'Teléfono',
-                  textInputType: TextInputType.emailAddress,
-                  obscure: false,
-                  icon: Icons.phone),
+                controller: phoneController,
+                text: 'Teléfono',
+                textInputType: TextInputType.phone,
+                obscure: false,
+                icon: Icons.phone,
+                textCap: TextCapitalization.none,
+              ),
               const SizedBox(
                 height: 10,
               ),
 
               ///EMAIL
               TextFormGlobalScreen(
-                  controller: emailController,
-                  text: 'Email',
-                  textInputType: TextInputType.emailAddress,
-                  obscure: false,
-                  icon: Icons.email),
+                controller: emailController,
+                text: 'Email',
+                textInputType: TextInputType.emailAddress,
+                obscure: false,
+                icon: Icons.email,
+                textCap: TextCapitalization.none,
+              ),
               const SizedBox(
                 height: 10,
               ),
 
               ///Password
               TextFormGlobalScreen(
-                  controller: passwordController,
-                  text: 'Contraseña',
-                  textInputType: TextInputType.visiblePassword,
-                  obscure: true,
-                  icon: Icons.password),
+                controller: passwordController,
+                text: 'Contraseña',
+                textInputType: TextInputType.visiblePassword,
+                obscure: true,
+                icon: Icons.password,
+                textCap: TextCapitalization.none,
+              ),
               const SizedBox(
                 height: 10,
               ),
 
               ///Password
               TextFormGlobalScreen(
-                  controller: passwordController,
-                  text: 'Confirmar Contraseña',
-                  textInputType: TextInputType.visiblePassword,
-                  obscure: true,
-                  icon: Icons.password),
+                controller: confpasswordController,
+                text: 'Confirmar Contraseña',
+                textInputType: TextInputType.visiblePassword,
+                obscure: true,
+                icon: Icons.password,
+                textCap: TextCapitalization.none,
+              ),
               const SizedBox(
                 height: 25,
               ),
               InkWell(
                 onTap: () {
-                  print('Login');
+                  //REGISTRO DE USUARIOS
+
+                  userRegister();
                 },
                 child: Container(
                   alignment: Alignment.center,

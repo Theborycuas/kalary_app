@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 
 class TextFormGlobalScreen extends StatelessWidget {
+  final TextEditingController controller;
+  final String text;
+  final TextInputType textInputType;
+  final bool obscure;
+  final IconData icon;
+  final TextCapitalization textCap;
+
   const TextFormGlobalScreen(
       {Key? key,
       required this.controller,
       required this.text,
       required this.textInputType,
       required this.obscure,
-      required this.icon})
+      required this.icon,
+      required this.textCap})
       : super(key: key);
-  final TextEditingController controller;
-  final String text;
-  final TextInputType textInputType;
-  final bool obscure;
-  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +32,7 @@ class TextFormGlobalScreen extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         keyboardType: textInputType,
+        textCapitalization: textCap,
         obscureText: obscure,
         decoration: InputDecoration(
             hintText: text,

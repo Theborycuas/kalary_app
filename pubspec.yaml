@@ -37,6 +37,8 @@ dependencies:
   get: ^4.6.5
   hexcolor: ^2.0.7
   flutter_svg: ^1.1.1+1
+  firebase_core:
+  cloud_firestore:
 
 dev_dependencies:
   flutter_test:
