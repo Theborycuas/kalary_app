@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kalary_app/theme/app_theme.dart';
 
 class SocialIconLoginScreen extends StatelessWidget {
   const SocialIconLoginScreen({Key? key}) : super(key: key);
@@ -11,15 +12,27 @@ class SocialIconLoginScreen extends StatelessWidget {
         Container(
           alignment: Alignment.center,
           child: const Text(
-            'O Inicia seción con',
-            style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
+            '- O -',
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        Container(
+          alignment: Alignment.center,
+          child: const Text(
+            'Inicia seción con',
+            style:
+                TextStyle(color: AppTheme.primary, fontWeight: FontWeight.w600),
           ),
         ),
         const SizedBox(
           height: 25,
         ),
         Container(
-          width: MediaQuery.of(context).size.width * 0.6,
+          width: MediaQuery.of(context).size.width * 0.5,
+          height: MediaQuery.of(context).size.width * 0.2,
           child: Row(
             children: [
               ///GOOGLE
@@ -28,7 +41,7 @@ class SocialIconLoginScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(30),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.1),
@@ -37,7 +50,7 @@ class SocialIconLoginScreen extends StatelessWidget {
                       ]),
                   child: SvgPicture.asset(
                     'assets/img/google.svg',
-                    height: 50,
+                    height: 40,
                   ),
                 ),
               ),
@@ -51,7 +64,7 @@ class SocialIconLoginScreen extends StatelessWidget {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(30),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.1),
@@ -60,7 +73,7 @@ class SocialIconLoginScreen extends StatelessWidget {
                         ]),
                     child: Image.asset(
                       'assets/img/facebookpng.png',
-                      width: 50,
+                      width: 40,
                     )),
               ),
             ],

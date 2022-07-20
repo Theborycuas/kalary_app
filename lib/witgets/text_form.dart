@@ -6,12 +6,14 @@ class TextFormGlobalScreen extends StatelessWidget {
       required this.controller,
       required this.text,
       required this.textInputType,
-      required this.obscure})
+      required this.obscure,
+      required this.icon})
       : super(key: key);
   final TextEditingController controller;
   final String text;
   final TextInputType textInputType;
   final bool obscure;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +32,12 @@ class TextFormGlobalScreen extends StatelessWidget {
         obscureText: obscure,
         decoration: InputDecoration(
             hintText: text,
+            suffixIcon: Icon(icon),
             border: InputBorder.none,
-            contentPadding: EdgeInsets.all(0),
-            hintStyle: TextStyle(height: 1)),
+            contentPadding: const EdgeInsets.all(15),
+            hintStyle: const TextStyle(
+              height: 1,
+            )),
       ),
     );
   }

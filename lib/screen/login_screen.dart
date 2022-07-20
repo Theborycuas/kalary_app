@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kalary_app/screen/register_sceen.dart';
+import 'package:kalary_app/theme/app_theme.dart';
 import 'package:kalary_app/witgets/button.dart';
 import 'package:kalary_app/witgets/social_icon_login.dart';
 
@@ -15,8 +17,13 @@ class LoginScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: SafeArea(
             child: Container(
+          // decoration: const BoxDecoration(
+          //     gradient: LinearGradient(colors: [
+          //   Colors.white,
+          //   Color.fromARGB(255, 200, 233, 255),
+          // ])),
           width: double.infinity,
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -36,58 +43,72 @@ class LoginScreen extends StatelessWidget {
                 alignment: Alignment.center,
                 child: const Image(
                   image: AssetImage('assets/img/logokalary.png'),
-                  width: 150,
-                  height: 150,
+                  width: 110,
+                  height: 110,
                 ),
               ),
               Container(
                 alignment: Alignment.center,
                 child: const Text(
-                  'K LARY',
+                  "K'LARY",
                   style: TextStyle(
                       color: Colors.black,
-                      fontSize: 30,
+                      fontSize: 25,
                       fontWeight: FontWeight.bold),
                 ),
               ),
               const SizedBox(
                 height: 30,
               ),
-              const Text(
-                'Iniciar Sesión',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
 
               ///EMAIL
-              TextFormGlobalScreen(
-                controller: emailController,
-                text: 'Email',
-                textInputType: TextInputType.emailAddress,
-                obscure: false,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
+              Card(
+                elevation: 15,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+                  child: Column(children: [
+                    Container(
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Iniciar Sesión',
+                        style: TextStyle(
+                            color: AppTheme.primary,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormGlobalScreen(
+                        controller: emailController,
+                        text: 'Email',
+                        textInputType: TextInputType.emailAddress,
+                        obscure: false,
+                        icon: Icons.email),
+                    const SizedBox(
+                      height: 10,
+                    ),
 
-              ///Password
-              TextFormGlobalScreen(
-                controller: passwordController,
-                text: 'Password',
-                textInputType: TextInputType.visiblePassword,
-                obscure: true,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
+                    ///Password
+                    TextFormGlobalScreen(
+                        controller: passwordController,
+                        text: 'Password',
+                        textInputType: TextInputType.visiblePassword,
+                        obscure: true,
+                        icon: Icons.password),
+                    const SizedBox(
+                      height: 15,
+                    ),
 
-              ///Button
-              const ButtonGlobalScreen(),
+                    ///Button
+                    const ButtonGlobalScreen(),
+                  ]),
+                ),
+              ),
 
               const SizedBox(
                 height: 15,
@@ -105,13 +126,17 @@ class LoginScreen extends StatelessWidget {
         alignment: Alignment.center,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text('¿No tienes una cuenta? '),
+          children: [
+            const Text('¿No tienes una cuenta? '),
             InkWell(
-              child: Text(
+              child: const Text(
                 'Registrate',
                 style: TextStyle(color: Colors.red),
               ),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => RegisterScreen()));
+              },
             )
           ],
         ),

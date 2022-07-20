@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kalary_app/theme/app_theme.dart';
 
 class ButtonGlobalScreen extends StatelessWidget {
   const ButtonGlobalScreen({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class ButtonGlobalScreen extends StatelessWidget {
         alignment: Alignment.center,
         height: 55,
         decoration: BoxDecoration(
-            color: Colors.red,
+            color: AppTheme.primary,
             borderRadius: BorderRadius.circular(6),
             boxShadow: [
               BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10)
