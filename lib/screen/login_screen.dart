@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kalary_app/screen/register_sceen.dart';
 import 'package:kalary_app/theme/app_theme.dart';
-import 'package:kalary_app/witgets/button.dart';
+import 'package:kalary_app/witgets/login_button.dart';
 import 'package:kalary_app/witgets/social_icon_login.dart';
 
 import '../witgets/text_form.dart';

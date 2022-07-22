@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kalary_app/screen/list_user_screen.dart';
 import 'package:kalary_app/theme/app_theme.dart';
 
 class ButtonGlobalScreen extends StatelessWidget {
@@ -8,6 +9,8 @@ class ButtonGlobalScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => ListUserScreen()));
         print('Login');
       },
       child: Container(
