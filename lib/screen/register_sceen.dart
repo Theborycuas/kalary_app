@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
@@ -15,6 +16,7 @@ class RegisterScreen extends StatelessWidget {
   final TextEditingController confpasswordController = TextEditingController();
 
   final firebase = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   Future userRegister() async {
     try {
@@ -24,7 +26,9 @@ class RegisterScreen extends StatelessWidget {
         'email': emailController.text,
         'password': passwordController.text
       });
-      print('Información enviada');
+
+      auth.createUserWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
 
       //VACIAR CAMPOS
       nameController.text = "";
