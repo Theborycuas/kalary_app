@@ -30,6 +30,9 @@ class TextFormGlobalScreen extends StatelessWidget {
             BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 7)
           ]),
       child: TextFormField(
+        onChanged: ((value) {
+          print(value);
+        }),
         controller: controller,
         keyboardType: textInputType,
         textCapitalization: textCap,

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kalary_app/screen/register_sceen.dart';
 import 'package:kalary_app/theme/app_theme.dart';
@@ -5,11 +6,30 @@ import 'package:kalary_app/witgets/login_button.dart';
 import 'package:kalary_app/witgets/social_icon_login.dart';
 
 import '../witgets/text_form.dart';
+import 'list_user_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  static Future<User?> loginUsingEmailPassword(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+    try {
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      user = userCredential.user;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "user-not-found") {
+        print('NO EXISTE USUARIO PARA ESTE EMAIL');
+      }
+    }
+    return user;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +109,7 @@ class LoginScreen extends StatelessWidget {
                       textInputType: TextInputType.emailAddress,
                       obscure: false,
                       icon: Icons.email,
-                      textCap: TextCapitalization.words,
+                      textCap: TextCapitalization.none,
                     ),
                     const SizedBox(
                       height: 10,
@@ -109,7 +129,44 @@ class LoginScreen extends StatelessWidget {
                     ),
 
                     ///Button
-                    const ButtonGlobalScreen(),
+
+                    InkWell(
+                      onTap: () async {
+                        User? user = await loginUsingEmailPassword(
+                            email: emailController.text,
+                            password: passwordController.text,
+                            context: context);
+                        print(user);
+                        if (user != null) {
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => ListUserScreen()));
+                        } else {
+                          print('NO SE ENCONTRO EL USUARIO');
+                        }
+
+                        //LISTA DE USUARIOS
+                        // Navigator.push(
+                        //     context, MaterialPageRoute(builder: (context) => ListUserScreen()));
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 55,
+                        decoration: BoxDecoration(
+                            color: AppTheme.primary,
+                            borderRadius: BorderRadius.circular(6),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 10)
+                            ]),
+                        child: const Text(
+                          'Iniciar Sesión',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    )
                   ]),
                 ),
               ),

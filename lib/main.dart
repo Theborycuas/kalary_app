@@ -9,11 +9,11 @@ Future main() async {
   await Firebase.initializeApp();
 
   //INICIALIZAR DB APP
-  runApp(const MyApp());
+  runApp(const KalaryApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class KalaryApp extends StatelessWidget {
+  const KalaryApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

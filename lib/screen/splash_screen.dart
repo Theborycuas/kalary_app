@@ -1,17 +1,31 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kalary_app/screen/list_user_screen.dart';
 import 'package:kalary_app/screen/login_screen.dart';
 import 'package:kalary_app/theme/app_theme.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
+  Widget _getLoadingPage() {
+    return StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (BuildContext context, snapshot) {
+          if (snapshot.data != null) {
+            return ListUserScreen();
+          } else {
+            return LoginScreen();
+          }
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
-    Timer(const Duration(seconds: 10), () {
-      Get.to(() => LoginScreen());
+    Timer(const Duration(seconds: 2), () {
+      Get.to(() => _getLoadingPage());
     });
     return Scaffold(
       //backgroundColor: AppTheme.primary,
