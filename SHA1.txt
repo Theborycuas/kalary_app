@@ -1,0 +1,8 @@
+Variant: debugAndroidTest
+Config: debug
+Store: C:\Users\Borys Jair\.android\debug.keystore
+Alias: AndroidDebugKey
+MD5: 50:81:85:FF:39:1A:A6:62:E6:C3:6E:A4:C1:98:BD:75
+SHA1: 65:75:79:4D:CF:26:9A:79:F5:3B:86:C1:01:57:89:2D:1B:6A:CE:44
+SHA-256: 56:50:14:BE:51:5A:77:E7:29:68:CB:44:DB:CF:B7:97:CE:7E:D1:3F:FC:D7:D5:5B:57:E5:FD:A7:34:43:B4:90
+Valid until: s├íbado, 8 de junio de 2052

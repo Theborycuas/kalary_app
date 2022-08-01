@@ -1,6 +1,13 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:kalary_app/screen/list_user_screen.dart';
 import 'package:kalary_app/theme/app_theme.dart';
+
+import '../functions/login_with_google.dart';
 
 class SocialIconLoginScreen extends StatelessWidget {
   const SocialIconLoginScreen({Key? key}) : super(key: key);
@@ -36,8 +43,23 @@ class SocialIconLoginScreen extends StatelessWidget {
           child: Row(
             children: [
               ///GOOGLE
-              Expanded(
+              InkWell(
+                onTap: () {
+                  print("INICIO SESIÓN CON GOOGLE");
+                  LoginWithGoogle().loginUsingGoogle().then((user) {
+                    if (user != null) {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) {
+                        return ListUserScreen();
+                      }));
+                    } else {
+                      print('USUARIO NULO');
+                    }
+                  });
+                },
                 child: Container(
+                  width: MediaQuery.of(context).size.width * 0.23,
+                  height: MediaQuery.of(context).size.width * 0.2,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       color: Colors.white,
