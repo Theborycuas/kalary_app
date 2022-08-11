@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:kalary_app/screen/home_page_sceen.dart';
 import 'package:kalary_app/screen/list_user_screen.dart';
 import 'package:kalary_app/theme/app_theme.dart';
 
@@ -50,7 +51,7 @@ class SocialIconLoginScreen extends StatelessWidget {
                     if (user != null) {
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (context) {
-                        return ListUserScreen();
+                        return HomePageScreen();
                       }));
                     } else {
                       print('USUARIO NULO');

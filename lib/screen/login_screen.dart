@@ -9,6 +9,7 @@ import 'package:kalary_app/witgets/login_button.dart';
 import 'package:kalary_app/witgets/social_icon_login.dart';
 
 import '../witgets/text_form.dart';
+import 'home_page_sceen.dart';
 import 'list_user_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -125,7 +126,7 @@ class LoginScreen extends StatelessWidget {
                         if (user != null) {
                           Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                  builder: (context) => ListUserScreen()));
+                                  builder: (context) => HomePageScreen()));
                         } else {
                           print('NO SE ENCONTRO EL USUARIO');
                         }
