@@ -86,7 +86,8 @@ class _ExplorePageState extends State<ExplorePage> {
                         child: Row(
                           children: [
                             Container(
-                              width: size.width * 0.72,
+                              //OJO
+                              width: size.width * 0.65,
                               child: Column(
                                 children: [
                                   Row(
@@ -142,7 +143,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                       if (indexLikes == 0) {
                                         return Padding(
                                           padding:
-                                              const EdgeInsets.only(right: 8),
+                                              const EdgeInsets.only(right: 9),
                                           child: Container(
                                             decoration: BoxDecoration(
                                                 borderRadius:
@@ -169,7 +170,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                       }
                                       return Padding(
                                         padding:
-                                            const EdgeInsets.only(right: 8),
+                                            const EdgeInsets.only(right: 5),
                                         child: Container(
                                           decoration: BoxDecoration(
                                             borderRadius:

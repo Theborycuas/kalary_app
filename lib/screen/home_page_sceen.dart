@@ -3,6 +3,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kalary_app/screen/explore_page_screen.dart';
+import 'package:kalary_app/screen/users_screen/profile_user_screen.dart';
 import 'package:kalary_app/theme/app_theme.dart';
 import 'package:kalary_app/witgets/app_bar_home_page.dart';
 
@@ -21,7 +22,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
       backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
-        child: getAppBar(),
+        child: getAppBar(context),
       ),
       body: getBody(),
     );
@@ -30,11 +31,16 @@ class _HomePageScreenState extends State<HomePageScreen> {
   Widget getBody() {
     return IndexedStack(
       index: pageIndex,
-      children: [ExplorePage(), ExplorePage(), ExplorePage(), ExplorePage()],
+      children: [
+        ExplorePage(),
+        ExplorePage(),
+        ExplorePage(),
+        ExplorePage(),
+      ],
     );
   }
 
-  Widget getAppBar() {
+  Widget getAppBar(BuildContext context) {
     var item = [
       pageIndex == 0
           ? "assets/img/explore_active_icon.svg"
@@ -63,6 +69,12 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 onPressed: () {
                   setState(() {
                     pageIndex = index;
+                    if (pageIndex == 3) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProfileUserScreen()));
+                    }
                   });
                 },
                 icon: SvgPicture.asset(item[index]),

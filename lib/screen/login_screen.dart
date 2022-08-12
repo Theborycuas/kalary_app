@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:kalary_app/screen/register_sceen.dart';
+import 'package:kalary_app/screen/register_user_sceen.dart';
 import 'package:kalary_app/theme/app_theme.dart';
 import 'package:kalary_app/witgets/login_button.dart';
 import 'package:kalary_app/witgets/social_icon_login.dart';
