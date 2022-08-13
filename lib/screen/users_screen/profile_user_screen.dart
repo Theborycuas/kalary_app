@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../witgets/appbar_user_profile.dart';
@@ -6,7 +8,12 @@ import '../../witgets/numbersWidget.dart';
 import '../../witgets/profile_widget.dart';
 
 class ProfileUserScreen extends StatelessWidget {
-  const ProfileUserScreen({Key? key}) : super(key: key);
+  ProfileUserScreen({Key? key}) : super(key: key);
+
+  // final consulta = FirebaseFirestore.instance
+  //     .collection('users_db')
+  //     .where('email', isEqualTo: 'borys_jair@hotmail.com')
+  //     .get();
 
   @override
   Widget build(BuildContext context) {
@@ -58,14 +65,19 @@ class ProfileUserScreen extends StatelessWidget {
   }
 
   Widget buildName() {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    String? email = user?.email.toString();
+    String? name = user?.uid;
+
     return Column(
-      children: const [
+      children: [
         Text(
-          'BORYS',
+          name.toString(),
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
         Text(
-          'borys_jair@hotmail.com',
+          email.toString(),
           style: TextStyle(
             color: Colors.grey,
           ),
@@ -75,7 +87,16 @@ class ProfileUserScreen extends StatelessWidget {
   }
 
   Widget buildUpgradeButton() {
-    return ButtonWidget(text: 'COPIAR y PEGAR', onClicked: () {});
+    return ButtonWidget(
+        text: 'COPIAR y PEGAR',
+        onClicked: () {
+          //BUSCAR ID DE USUARIO LOGUEADO
+          final FirebaseAuth auth = FirebaseAuth.instance;
+          final User? user = auth.currentUser;
+          final String? id = user?.uid;
+
+          print(id.toString());
+        });
   }
 
   Widget buildAtributes({required String text}) {

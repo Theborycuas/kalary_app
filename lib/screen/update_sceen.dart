@@ -106,7 +106,7 @@ class UpdateScreen extends StatelessWidget {
                 height: 20,
               ),
 
-              ///EMAIL
+              ///NAME
               TextFormGlobalScreen(
                 controller: nameController,
                 text: 'Nombres',
@@ -119,7 +119,7 @@ class UpdateScreen extends StatelessWidget {
                 height: 10,
               ),
 
-              ///EMAIL
+              ///PHONE
               TextFormGlobalScreen(
                 controller: phoneController,
                 text: 'Teléfono',

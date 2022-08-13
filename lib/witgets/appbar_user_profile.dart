@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../functions/signOut.dart';
+
 AppBar buildAppBar(BuildContext context) {
-  final icon = CupertinoIcons.moon_stars;
+  final icon = CupertinoIcons.arrow_left_to_line;
   return AppBar(
     leading: BackButton(
       color: Colors.black,
@@ -11,7 +13,9 @@ AppBar buildAppBar(BuildContext context) {
     elevation: 0,
     actions: [
       IconButton(
-        onPressed: () {},
+        onPressed: () {
+          signOut(context);
+        },
         icon: Icon(
           icon,
           color: Colors.black,
