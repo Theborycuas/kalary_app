@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kalary_app/screen/list_user_screen.dart';
@@ -18,7 +20,7 @@ class SplashScreen extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
           if (snapshot.data != null) {
-            return ProfileUserScreen();
+            return HomePageScreen();
           } else {
             return LoginScreen();
           }

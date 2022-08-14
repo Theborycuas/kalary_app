@@ -186,9 +186,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future userRegisterwithEmailAndPasword(BuildContext context) async {
     try {
       auth.createUserWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+          email: emailController.text, password: passwordController.text);
 
       loginUsingEmailPassword(
           context: context,
@@ -258,6 +256,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         'phone': phone,
         'email': email,
         'password': password,
+        'photo':
+            "https://firebasestorage.googleapis.com/v0/b/klary-bd657.appspot.com/o/WithOutUser.png?alt=media&token=29347eaa-61da-4f9b-849d-d5e4aef346fb",
+        'age': "Edad",
+        'birthday': "Cumpleaños",
+        'state': "null",
+        'gen': "Genero",
       });
 
       if (user != null) {

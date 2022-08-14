@@ -1,11 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ProfileWidget extends StatelessWidget {
   //LLAMAR A UNA FUNCIÓN ONCLIC DESDE OTRO WIDGET
   final VoidCallback onClicked;
+  final DocumentSnapshot userSnapshot;
   const ProfileWidget({
     Key? key,
     required this.onClicked,
+    required this.userSnapshot,
   }) : super(key: key);
 
   @override
@@ -15,7 +19,7 @@ class ProfileWidget extends StatelessWidget {
     return Center(
         child: Stack(
       children: [
-        buildImage(),
+        buildImage(userSnapshot),
         Positioned(
           bottom: 0,
           right: 4,
@@ -25,14 +29,18 @@ class ProfileWidget extends StatelessWidget {
     ));
   }
 
-  Widget buildImage() {
-    final image = NetworkImage(
-        'https://scontent.fuio1-1.fna.fbcdn.net/v/t39.30808-6/295890552_5389864964435233_5220293913403080335_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeENqneHox3izzLFIzE-HbBxAY01pY56ZKcBjTWljnpkp03oDaBtZOz7CoDj2Thmu4JbEThS0a5J8Y1xwlOHGtSS&_nc_ohc=tkAHOB-HOIsAX_APMjm&_nc_ht=scontent.fuio1-1.fna&oh=00_AT9pQLStcPF584c9EScLPxxn24LXCt6wS1dlssZfdbltiA&oe=62FB1644');
+  Widget buildImage(DocumentSnapshot userUnapshot) {
+    final data = userSnapshot.data() as Map<String, dynamic>;
+
+    final photoUser = NetworkImage(data['photo']);
+    final photowithoutUser = NetworkImage(
+        'https://image.shutterstock.com/image-vector/user-avatar-icon-button-profile-260nw-1517550290.jpg');
+
     return ClipOval(
       child: Material(
         color: Colors.transparent,
         child: Ink.image(
-          image: image,
+          image: data['photo'] != 'null' ? photoUser : photowithoutUser,
           fit: BoxFit.cover,
           width: 130,
           height: 130,

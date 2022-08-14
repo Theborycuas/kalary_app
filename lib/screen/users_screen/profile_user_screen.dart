@@ -2,18 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../theme/app_theme.dart';
 import '../../witgets/appbar_user_profile.dart';
 import '../../witgets/button_widget_profile.dart';
 import '../../witgets/numbersWidget.dart';
 import '../../witgets/profile_widget.dart';
+import '../../witgets/text_form.dart';
 
 class ProfileUserScreen extends StatelessWidget {
-  ProfileUserScreen({Key? key}) : super(key: key);
-
-  // final consulta = FirebaseFirestore.instance
-  //     .collection('users_db')
-  //     .where('email', isEqualTo: 'borys_jair@hotmail.com')
-  //     .get();
+  const ProfileUserScreen({Key? key, required this.userSnapshot})
+      : super(key: key);
+  final DocumentSnapshot userSnapshot;
 
   @override
   Widget build(BuildContext context) {
@@ -28,85 +27,258 @@ class ProfileUserScreen extends StatelessWidget {
           //LLAMAR A UNA FUNCIÓN ONCLIC DESDE OTRO WIDGET
           ProfileWidget(
             onClicked: () async {},
+            userSnapshot: userSnapshot,
           ),
           const SizedBox(
             height: 24,
           ),
-          buildName(),
-          const SizedBox(
-            height: 24,
-          ),
-          Center(
-            child: buildUpgradeButton(),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          const NumbersWidget(),
-          const SizedBox(
-            height: 50,
-          ),
-          buildAtributes(text: "0996588558"),
-          const SizedBox(
-            height: 24,
-          ),
-          buildAtributes(text: "24/10/1996"),
-          const SizedBox(
-            height: 24,
-          ),
-          buildAtributes(text: "Hombre"),
-          const SizedBox(
-            height: 24,
-          ),
-          buildAtributes(text: "Activo"),
+          buildAtributes(context, userSnapshot),
         ],
       ),
     );
   }
 
-  Widget buildName() {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    final User? user = auth.currentUser;
-    String? email = user?.email.toString();
-    String? name = user?.uid;
-
-    return Column(
-      children: [
-        Text(
-          name.toString(),
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-        ),
-        Text(
-          email.toString(),
-          style: TextStyle(
-            color: Colors.grey,
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget buildUpgradeButton() {
+  Widget buildUpgradeButton(
+      BuildContext context, DocumentSnapshot userSnapshot) {
     return ButtonWidget(
-        text: 'COPIAR y PEGAR',
+        text: 'EDITAR PERFIL',
         onClicked: () {
           //BUSCAR ID DE USUARIO LOGUEADO
-          final FirebaseAuth auth = FirebaseAuth.instance;
-          final User? user = auth.currentUser;
-          final String? id = user?.uid;
+          // final FirebaseAuth auth = FirebaseAuth.instance;
+          // final User? user = auth.currentUser;
+          // final String? id = user?.uid;
 
-          print(id.toString());
+          upgradeUser(context, userSnapshot);
+
+          // print(id.toString());
         });
   }
 
-  Widget buildAtributes({required String text}) {
+  Widget buildAtributes(BuildContext context, DocumentSnapshot userSnapshot) {
+    final data = userSnapshot.data() as Map<String, dynamic>;
+
     return Column(
       children: [
         Text(
-          text,
+          data['name'],
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          data['email'],
+          style: TextStyle(
+            color: Colors.grey,
+          ),
+        ),
+        const SizedBox(
+          height: 25,
+        ),
+        const NumbersWidget(),
+        const SizedBox(
+          height: 25,
+        ),
+        const Text(
+          'Teléfono',
+          style: TextStyle(
+            color: Colors.grey,
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          data['phone'],
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        const Text(
+          'Edad',
+          style: TextStyle(
+            color: Colors.grey,
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          data['age'],
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        const Text(
+          'Cumpleaños',
+          style: TextStyle(
+            color: Colors.grey,
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          data['birthday'],
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        const Text(
+          'Genero',
+          style: TextStyle(
+            color: Colors.grey,
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          data['gen'],
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Center(
+          child: buildUpgradeButton(context, userSnapshot),
         ),
       ],
     );
+  }
+
+  Future upgradeUser(BuildContext context, DocumentSnapshot userSnapshot) {
+    final data = userSnapshot.data() as Map<String, dynamic>;
+    final firebase = FirebaseFirestore.instance;
+
+    final TextEditingController nameController =
+        TextEditingController(text: data['name']);
+    final TextEditingController phoneController =
+        TextEditingController(text: data['phone']);
+    final TextEditingController ageController =
+        TextEditingController(text: data['age']);
+    final TextEditingController birthdayController =
+        TextEditingController(text: data['birthday']);
+    final TextEditingController genController =
+        TextEditingController(text: data['gen']);
+
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Center(child: Text('EDITAR INFORMACIÓN')),
+            content: SingleChildScrollView(
+              child: SafeArea(
+                child: Container(
+                  height: 410,
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+
+                      ///EMAIL
+                      TextFormGlobalScreen(
+                        controller: nameController,
+                        text: 'Nombres',
+                        textInputType: TextInputType.name,
+                        obscure: false,
+                        icon: Icons.person,
+                        textCap: TextCapitalization.words,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+
+                      ///EMAIL
+                      TextFormGlobalScreen(
+                        controller: phoneController,
+                        text: 'Teléfono',
+                        textInputType: TextInputType.phone,
+                        obscure: false,
+                        icon: Icons.phone,
+                        textCap: TextCapitalization.none,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+
+                      ///EMAIL
+                      TextFormGlobalScreen(
+                        controller: ageController,
+                        text: 'Edad',
+                        textInputType: TextInputType.name,
+                        obscure: false,
+                        icon: Icons.email,
+                        textCap: TextCapitalization.none,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormGlobalScreen(
+                        controller: birthdayController,
+                        text: 'Cumpleaños',
+                        textInputType: TextInputType.name,
+                        obscure: false,
+                        icon: Icons.email,
+                        textCap: TextCapitalization.none,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormGlobalScreen(
+                        controller: genController,
+                        text: 'Genero',
+                        textInputType: TextInputType.name,
+                        obscure: false,
+                        icon: Icons.email,
+                        textCap: TextCapitalization.none,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          //REGISTRO DE USUARIOS
+                          firebase
+                              .collection('users_db')
+                              .doc(userSnapshot.id)
+                              .update({
+                            'name': nameController.text,
+                            'phone': phoneController.text,
+                            'age': ageController.text,
+                            'birthday': birthdayController.text,
+                            'gen': genController.text,
+                          });
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 55,
+                          decoration: BoxDecoration(
+                              color: AppTheme.primary,
+                              borderRadius: BorderRadius.circular(6),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 10)
+                              ]),
+                          child: const Text(
+                            'Actalizar',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
   }
 }

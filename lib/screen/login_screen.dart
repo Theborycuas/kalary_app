@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -12,10 +13,40 @@ import '../witgets/text_form.dart';
 import 'home_page_sceen.dart';
 import 'list_user_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+
+  static Future<User?> loginUsingEmailPassword(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+    try {
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      user = userCredential.user;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "user-not-found") {
+        print('NO EXISTE USUARIO PARA ESTE EMAIL');
+      }
+    }
+    return user;
+  }
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
+  bool passwordVisible = true;
+  @override
+  void initState() {
+    // TODO: implement initState
+    passwordVisible = true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,13 +133,45 @@ class LoginScreen extends StatelessWidget {
                     ),
 
                     ///Password
-                    TextFormGlobalScreen(
-                      controller: passwordController,
-                      text: 'Password',
-                      textInputType: TextInputType.visiblePassword,
-                      obscure: true,
-                      icon: Icons.password,
-                      textCap: TextCapitalization.words,
+                    Container(
+                      height: 55,
+                      padding: const EdgeInsets.only(top: 3, left: 15),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(6),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 7)
+                          ]),
+                      child: TextFormField(
+                        onChanged: ((value) {
+                          print(value);
+                        }),
+                        controller: passwordController,
+                        keyboardType: TextInputType.visiblePassword,
+                        textCapitalization: TextCapitalization.words,
+                        decoration: InputDecoration(
+                            hintText: 'Password',
+                            suffixIcon: IconButton(
+                              icon: Icon(passwordVisible
+                                  ? Icons.visibility_off
+                                  : Icons.visibility),
+                              onPressed: () {
+                                setState(() {
+                                  passwordVisible
+                                      ? passwordVisible = false
+                                      : passwordVisible = true;
+                                });
+                              },
+                            ),
+                            border: InputBorder.none,
+                            contentPadding: const EdgeInsets.all(15),
+                            hintStyle: const TextStyle(
+                              height: 1,
+                            )),
+                        obscureText: passwordVisible,
+                      ),
                     ),
                     const SizedBox(
                       height: 15,
@@ -118,15 +181,43 @@ class LoginScreen extends StatelessWidget {
 
                     InkWell(
                       onTap: () async {
-                        User? user = await loginUsingEmailPassword(
+                        User? user = await LoginScreen.loginUsingEmailPassword(
                             email: emailController.text,
                             password: passwordController.text,
                             context: context);
                         print(user);
                         if (user != null) {
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => HomePageScreen()));
+                          //BUSCAR ID DE USUARIO LOGUEADO
+                          final FirebaseAuth auth = FirebaseAuth.instance;
+                          final User? user = auth.currentUser;
+                          String? idUserLogin = user?.uid;
+
+                          final userSnapshot = FirebaseFirestore.instance;
+
+                          final docRef = userSnapshot
+                              .collection("users_db")
+                              .doc(idUserLogin);
+
+                          docRef.get().then(
+                            (DocumentSnapshot userSnapshot) {
+                              final data =
+                                  userSnapshot.data() as Map<String, dynamic>;
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomePageScreen(
+                                            data: data,
+                                            userSnapshot: userSnapshot,
+                                          )));
+
+                              return userSnapshot;
+                            },
+                            onError: (e) => print("Error getting document: $e"),
+                          );
+
+                          // Navigator.of(context).pushReplacement(
+                          //     MaterialPageRoute(
+                          //         builder: (context) => HomePageScreen()));
                         } else {
                           print('NO SE ENCONTRO EL USUARIO');
                         }
@@ -162,7 +253,7 @@ class LoginScreen extends StatelessWidget {
               ),
 
               ///Social Login Icon
-              const SocialIconLoginScreen()
+              SocialIconLoginScreen()
             ],
           ),
         )),
@@ -189,23 +280,5 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  static Future<User?> loginUsingEmailPassword(
-      {required String email,
-      required String password,
-      required BuildContext context}) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user;
-    try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      user = userCredential.user;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == "user-not-found") {
-        print('NO EXISTE USUARIO PARA ESTE EMAIL');
-      }
-    }
-    return user;
   }
 }

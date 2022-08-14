@@ -4,22 +4,19 @@ import 'package:flutter/material.dart';
 import '../functions/signOut.dart';
 
 AppBar buildAppBar(BuildContext context) {
-  final icon = CupertinoIcons.arrow_left_to_line;
+  const icon = CupertinoIcons.arrow_right_to_line;
   return AppBar(
-    leading: BackButton(
+    leading: const BackButton(
       color: Colors.black,
     ),
-    backgroundColor: Color.fromARGB(0, 216, 216, 216),
+    backgroundColor: const Color.fromARGB(0, 216, 216, 216),
     elevation: 0,
     actions: [
       IconButton(
         onPressed: () {
           signOut(context);
         },
-        icon: Icon(
-          icon,
-          color: Colors.black,
-        ),
+        icon: const Icon(icon, color: Colors.red),
       )
     ],
   );
