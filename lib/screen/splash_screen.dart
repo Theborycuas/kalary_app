@@ -13,14 +13,31 @@ import 'package:kalary_app/theme/app_theme.dart';
 import 'home_page_sceen.dart';
 
 class SplashScreen extends StatelessWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  SplashScreen({Key? key, this.dataUserLogin}) : super(key: key);
+  Map<String, dynamic>? dataUserLogin;
+
+  Future readUser() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    String? idUserLogin = user?.uid;
+    final docUser =
+        FirebaseFirestore.instance.collection('users_db').doc(idUserLogin);
+    final userSnapshot = await docUser.get();
+    dataUserLogin = userSnapshot.data();
+    print(dataUserLogin);
+    return dataUserLogin;
+  }
 
   Widget _getLoadingPage() {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
+          readUser();
+
           if (snapshot.data != null) {
-            return HomePageScreen();
+            return HomePageScreen(
+              data: dataUserLogin,
+            );
           } else {
             return LoginScreen();
           }

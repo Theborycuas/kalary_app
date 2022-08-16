@@ -5,12 +5,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 class ProfileWidget extends StatelessWidget {
   //LLAMAR A UNA FUNCIÓN ONCLIC DESDE OTRO WIDGET
   final VoidCallback onClicked;
-  final DocumentSnapshot userSnapshot;
   const ProfileWidget({
     Key? key,
     required this.onClicked,
-    required this.userSnapshot,
+    this.data,
   }) : super(key: key);
+
+  final Map<String, dynamic>? data;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class ProfileWidget extends StatelessWidget {
     return Center(
         child: Stack(
       children: [
-        buildImage(userSnapshot),
+        buildImage(data),
         Positioned(
           bottom: 0,
           right: 4,
@@ -29,12 +30,10 @@ class ProfileWidget extends StatelessWidget {
     ));
   }
 
-  Widget buildImage(DocumentSnapshot userUnapshot) {
-    final data = userSnapshot.data() as Map<String, dynamic>;
-
-    final photoUser = NetworkImage(data['photo']);
+  Widget buildImage(Map<String, dynamic>? data) {
+    final photoUser = NetworkImage(data!['photo']);
     final photowithoutUser = NetworkImage(
-        'https://image.shutterstock.com/image-vector/user-avatar-icon-button-profile-260nw-1517550290.jpg');
+        'https://firebasestorage.googleapis.com/v0/b/klary-bd657.appspot.com/o/WithOutUser.png?alt=media&token=29347eaa-61da-4f9b-849d-d5e4aef346fb');
 
     return ClipOval(
       child: Material(

@@ -64,12 +64,12 @@ class _HomePageScreenState extends State<HomePageScreen> {
             ),
           );
         }
-        return getBody();
+        return getBody(widget.data);
       },
     );
   }
 
-  Widget getBody() {
+  Widget getBody(final Map<String, dynamic>? dataUser) {
     return IndexedStack(
       index: pageIndex,
       children: [
@@ -82,23 +82,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
   }
 
   Widget getAppBar(BuildContext context, final Map<String, dynamic>? data) {
-    //BUSCAR ID DE USUARIO LOGUEADO
-
-    // final FirebaseAuth auth = FirebaseAuth.instance;
-    // final User? user = auth.currentUser;
-    // String? idUserLogin = user?.uid;
-
-    // final userSnapshot = FirebaseFirestore.instance;
-
-    // final docRef = userSnapshot.collection("users_db").doc(idUserLogin);
-
-    // docRef.get().then(
-    //   (DocumentSnapshot userSnapshot) {
-    //     return userSnapshot;
-    //   },
-    //   onError: (e) => print("Error getting document: $e"),
-    // );
-
     var item = [
       pageIndex == 0
           ? "assets/img/explore_active_icon.svg"
@@ -109,11 +92,15 @@ class _HomePageScreenState extends State<HomePageScreen> {
       pageIndex == 2
           ? "assets/img/chat_active_icon.svg"
           : "assets/img/chat_icon.svg",
-      pageIndex == 3
-          ? "assets/img/account_active_icon.svg"
-          : "assets/img/account_icon.svg",
+      // pageIndex == 3
+      //     ? "assets/img/account_active_icon.svg"
+      //     : "assets/img/account_icon.svg",
     ];
 
+    final photoUser = NetworkImage(data!['photo']);
+    final photowithoutUser = NetworkImage(
+        'https://firebasestorage.googleapis.com/v0/b/klary-bd657.appspot.com/o/WithOutUser.png?alt=media&token=29347eaa-61da-4f9b-849d-d5e4aef346fb');
+    setState(() {});
     return AppBar(
       //QUITAR BOTON ATRAS DEL APPBAR
       automaticallyImplyLeading: false,
@@ -121,45 +108,89 @@ class _HomePageScreenState extends State<HomePageScreen> {
       elevation: 0,
       title: Padding(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(item.length, (index) {
-            return IconButton(
-              onPressed: () {
-                setState(() {
-                  pageIndex = index;
-                  if (pageIndex == 3) {
-                    //BUSCAR ID DE USUARIO LOGUEADO
-                    final FirebaseAuth auth = FirebaseAuth.instance;
-                    final User? user = auth.currentUser;
-                    String? idUserLogin = user?.uid;
-
-                    final userSnapshot = FirebaseFirestore.instance;
-
-                    final docRef =
-                        userSnapshot.collection("users_db").doc(idUserLogin);
-
-                    docRef.get().then(
-                      (DocumentSnapshot userSnapshot) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ProfileUserScreen(
-                                      userSnapshot: userSnapshot,
-                                    )));
-                        return userSnapshot;
-                      },
-                      onError: (e) => print("Error getting document: $e"),
-                    );
-                  }
-                });
-              },
-              icon: SvgPicture.asset(item[index]),
-              color: Color.fromARGB(255, 107, 107, 107),
-            );
-          }),
-        ),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          IconButton(
+            onPressed: () {},
+            icon: pageIndex == 0
+                ? SvgPicture.asset('assets/img/explore_active_icon.svg')
+                : SvgPicture.asset('assets/img/explore_icon.svg'),
+            color: Color.fromARGB(255, 107, 107, 107),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: pageIndex == 0
+                ? SvgPicture.asset('assets/img/likes_active_icon.svg')
+                : SvgPicture.asset('assets/img/likes_icon.svg'),
+            color: Color.fromARGB(255, 107, 107, 107),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: pageIndex == 0
+                ? SvgPicture.asset('assets/img/chat_active_icon.svg')
+                : SvgPicture.asset('assets/img/chat_icon.svg'),
+            color: Color.fromARGB(255, 107, 107, 107),
+          ),
+          InkWell(
+            child: CircleAvatar(
+              maxRadius: 20,
+              backgroundImage:
+                  data['photo'] != 'null' ? photoUser : photowithoutUser,
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProfileUserScreen(
+                            data: data,
+                          )));
+            },
+          )
+        ]),
       ),
     );
   }
 }
+
+// List.generate(item.length, (index) {
+//             return IconButton(
+//               onPressed: () {
+//                 setState(() {
+//                   pageIndex = index;
+//                   if (pageIndex == 3) {
+//                     Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                             builder: (context) => ProfileUserScreen(
+//                                   data: data,
+//                                 )));
+//                     //BUSCAR ID DE USUARIO LOGUEADO
+//                     // final FirebaseAuth auth = FirebaseAuth.instance;
+//                     // final User? user = auth.currentUser;
+//                     // String? idUserLogin = user?.uid;
+
+//                     // final userSnapshot = FirebaseFirestore.instance;
+
+//                     // final docRef =
+//                     //     userSnapshot.collection("users_db").doc(idUserLogin);
+
+//                     // docRef.get().then(
+//                     //   (DocumentSnapshot userSnapshot) {
+//                     //     Navigator.push(
+//                     //         context,
+//                     //         MaterialPageRoute(
+//                     //             builder: (context) => ProfileUserScreen(
+//                     //                   userSnapshot: userSnapshot,
+//                     //                   data: data,
+//                     //                 )));
+//                     //     return userSnapshot;
+//                     //   },
+//                     //   onError: (e) => print("Error getting document: $e"),
+//                     // );
+//                   }
+//                 });
+//               },
+//               icon: SvgPicture.asset(item[index]),
+//               color: Color.fromARGB(255, 107, 107, 107),
+//             );
+//           }),

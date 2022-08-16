@@ -10,9 +10,8 @@ import '../../witgets/profile_widget.dart';
 import '../../witgets/text_form.dart';
 
 class ProfileUserScreen extends StatelessWidget {
-  const ProfileUserScreen({Key? key, required this.userSnapshot})
-      : super(key: key);
-  final DocumentSnapshot userSnapshot;
+  const ProfileUserScreen({Key? key, this.data}) : super(key: key);
+  final Map<String, dynamic>? data;
 
   @override
   Widget build(BuildContext context) {
@@ -26,20 +25,19 @@ class ProfileUserScreen extends StatelessWidget {
           // ),
           //LLAMAR A UNA FUNCIÓN ONCLIC DESDE OTRO WIDGET
           ProfileWidget(
+            data: data,
             onClicked: () async {},
-            userSnapshot: userSnapshot,
           ),
           const SizedBox(
             height: 24,
           ),
-          buildAtributes(context, userSnapshot),
+          buildAtributes(context, data),
         ],
       ),
     );
   }
 
-  Widget buildUpgradeButton(
-      BuildContext context, DocumentSnapshot userSnapshot) {
+  Widget buildUpgradeButton(BuildContext context, Map<String, dynamic>? data) {
     return ButtonWidget(
         text: 'EDITAR PERFIL',
         onClicked: () {
@@ -48,19 +46,19 @@ class ProfileUserScreen extends StatelessWidget {
           // final User? user = auth.currentUser;
           // final String? id = user?.uid;
 
-          upgradeUser(context, userSnapshot);
+          upgradeUser(context, data);
 
           // print(id.toString());
         });
   }
 
-  Widget buildAtributes(BuildContext context, DocumentSnapshot userSnapshot) {
-    final data = userSnapshot.data() as Map<String, dynamic>;
+  Widget buildAtributes(BuildContext context, Map<String, dynamic>? data) {
+    // final data = userSnapshot.data() as Map<String, dynamic>;
 
     return Column(
       children: [
         Text(
-          data['name'],
+          data!['name'],
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
         const SizedBox(
@@ -144,18 +142,18 @@ class ProfileUserScreen extends StatelessWidget {
           height: 20,
         ),
         Center(
-          child: buildUpgradeButton(context, userSnapshot),
+          child: buildUpgradeButton(context, data),
         ),
       ],
     );
   }
 
-  Future upgradeUser(BuildContext context, DocumentSnapshot userSnapshot) {
-    final data = userSnapshot.data() as Map<String, dynamic>;
+  Future upgradeUser(BuildContext context, Map<String, dynamic>? data) {
+    // final data = userSnapshot.data() as Map<String, dynamic>;
     final firebase = FirebaseFirestore.instance;
 
     final TextEditingController nameController =
-        TextEditingController(text: data['name']);
+        TextEditingController(text: data!['name']);
     final TextEditingController phoneController =
         TextEditingController(text: data['phone']);
     final TextEditingController ageController =
@@ -245,7 +243,7 @@ class ProfileUserScreen extends StatelessWidget {
                           //REGISTRO DE USUARIOS
                           firebase
                               .collection('users_db')
-                              .doc(userSnapshot.id)
+                              .doc(data['id'])
                               .update({
                             'name': nameController.text,
                             'phone': phoneController.text,
