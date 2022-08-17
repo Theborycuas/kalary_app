@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kalary_app/screen/splash_screen.dart';
+import 'package:kalary_app/screen/login_screen/splash_screen.dart';
 
 Future main() async {
   //INICIALIZAR DB FIREBASE
@@ -20,7 +20,9 @@ class KalaryApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Kalary App',
-      home: SplashScreen(),
+      home: SplashScreen(
+        dataUserLogin: {},
+      ),
     );
   }
 }

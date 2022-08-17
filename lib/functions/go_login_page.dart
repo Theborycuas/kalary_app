@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../screen/login_screen.dart';
+import '../screen/login_screen/login_screen.dart';
 
 Future goLoginPage(BuildContext context) async {
   Navigator.push(

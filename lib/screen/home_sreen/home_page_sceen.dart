@@ -5,22 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:kalary_app/screen/explore_page_screen.dart';
+import 'package:kalary_app/screen/home_sreen/explore_page_screen.dart';
 import 'package:kalary_app/screen/users_screen/profile_user_screen.dart';
 import 'package:kalary_app/theme/app_theme.dart';
 import 'package:kalary_app/witgets/app_bar_home_page.dart';
 
-class HomePageScreen extends StatefulWidget {
-  HomePageScreen({Key? key, this.userSnapshot, this.data}) : super(key: key);
+class HomePageScreen extends StatelessWidget {
+  HomePageScreen({Key? key, this.userSnapshot, required this.dataUserLogin})
+      : super(key: key);
 
-  final DocumentSnapshot? userSnapshot;
-  final Map<String, dynamic>? data;
+  DocumentSnapshot? userSnapshot;
+  Map<String, dynamic> dataUserLogin;
 
-  @override
-  State<HomePageScreen> createState() => _HomePageScreenState();
-}
-
-class _HomePageScreenState extends State<HomePageScreen> {
   int pageIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -28,7 +24,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
       backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
-        child: getAppBar(context, widget.data),
+        child: getAppBar(context, dataUserLogin),
       ),
       body: streamBuilderUser(context),
     );
@@ -64,7 +60,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
             ),
           );
         }
-        return getBody(widget.data);
+        return getBody(dataUserLogin);
       },
     );
   }
@@ -81,7 +77,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
   }
 
-  Widget getAppBar(BuildContext context, final Map<String, dynamic>? data) {
+  Widget getAppBar(BuildContext context, Map<String, dynamic> data) {
     var item = [
       pageIndex == 0
           ? "assets/img/explore_active_icon.svg"
@@ -97,10 +93,13 @@ class _HomePageScreenState extends State<HomePageScreen> {
       //     : "assets/img/account_icon.svg",
     ];
 
-    final photoUser = NetworkImage(data!['photo']);
+    final photoUser = NetworkImage(
+        'https://firebasestorage.googleapis.com/v0/b/klary-bd657.appspot.com/o/WithOutUser.png?alt=media&token=29347eaa-61da-4f9b-849d-d5e4aef346fb');
     final photowithoutUser = NetworkImage(
         'https://firebasestorage.googleapis.com/v0/b/klary-bd657.appspot.com/o/WithOutUser.png?alt=media&token=29347eaa-61da-4f9b-849d-d5e4aef346fb');
-    setState(() {});
+
+    var index = 0;
+
     return AppBar(
       //QUITAR BOTON ATRAS DEL APPBAR
       automaticallyImplyLeading: false,
@@ -111,21 +110,27 @@ class _HomePageScreenState extends State<HomePageScreen> {
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              index == 0;
+            },
             icon: pageIndex == 0
                 ? SvgPicture.asset('assets/img/explore_active_icon.svg')
                 : SvgPicture.asset('assets/img/explore_icon.svg'),
             color: Color.fromARGB(255, 107, 107, 107),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              index == 1;
+            },
             icon: pageIndex == 0
                 ? SvgPicture.asset('assets/img/likes_active_icon.svg')
                 : SvgPicture.asset('assets/img/likes_icon.svg'),
             color: Color.fromARGB(255, 107, 107, 107),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              index == 2;
+            },
             icon: pageIndex == 0
                 ? SvgPicture.asset('assets/img/chat_active_icon.svg')
                 : SvgPicture.asset('assets/img/chat_icon.svg'),
@@ -151,46 +156,3 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
   }
 }
-
-// List.generate(item.length, (index) {
-//             return IconButton(
-//               onPressed: () {
-//                 setState(() {
-//                   pageIndex = index;
-//                   if (pageIndex == 3) {
-//                     Navigator.push(
-//                         context,
-//                         MaterialPageRoute(
-//                             builder: (context) => ProfileUserScreen(
-//                                   data: data,
-//                                 )));
-//                     //BUSCAR ID DE USUARIO LOGUEADO
-//                     // final FirebaseAuth auth = FirebaseAuth.instance;
-//                     // final User? user = auth.currentUser;
-//                     // String? idUserLogin = user?.uid;
-
-//                     // final userSnapshot = FirebaseFirestore.instance;
-
-//                     // final docRef =
-//                     //     userSnapshot.collection("users_db").doc(idUserLogin);
-
-//                     // docRef.get().then(
-//                     //   (DocumentSnapshot userSnapshot) {
-//                     //     Navigator.push(
-//                     //         context,
-//                     //         MaterialPageRoute(
-//                     //             builder: (context) => ProfileUserScreen(
-//                     //                   userSnapshot: userSnapshot,
-//                     //                   data: data,
-//                     //                 )));
-//                     //     return userSnapshot;
-//                     //   },
-//                     //   onError: (e) => print("Error getting document: $e"),
-//                     // );
-//                   }
-//                 });
-//               },
-//               icon: SvgPicture.asset(item[index]),
-//               color: Color.fromARGB(255, 107, 107, 107),
-//             );
-//           }),

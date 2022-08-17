@@ -5,11 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:kalary_app/screen/home_page_sceen.dart';
-import 'package:kalary_app/screen/list_user_screen.dart';
+import 'package:kalary_app/functions/login_functions.dart';
+import 'package:kalary_app/screen/home_sreen/home_page_sceen.dart';
+import 'package:kalary_app/screen/users_screen/list_user_screen.dart';
 import 'package:kalary_app/theme/app_theme.dart';
-
-import '../functions/login_with_google.dart';
 
 class SocialIconLoginScreen extends StatelessWidget {
   SocialIconLoginScreen({Key? key}) : super(key: key);
@@ -51,46 +50,28 @@ class SocialIconLoginScreen extends StatelessWidget {
                   print("INICIO SESIÓN CON GOOGLE");
                   LoginWithGoogle().loginUsingGoogle().then((user) {
                     if (user != null) {
-                      firebase
-                          .collection('users_db')
-                          .doc(user.uid.toString())
-                          .set({
-                        'id': user.uid.toString(),
-                        'name': user.displayName.toString(),
-                        'phone': user.phoneNumber.toString(),
-                        'email': user.email.toString(),
-                        'password': user.displayName,
-                        'photo': user.photoURL.toString(),
-                        'age': "Edad",
-                        'birthday': "Cumpleaños",
-                        'state': "null",
-                        'gen': "Genero",
-                      });
+                      searchUserFirestor(user);
 
                       //BUSCAR ID DE USUARIO LOGUEADO
-
                       final userSnapshot = FirebaseFirestore.instance;
-
                       final docRef =
                           userSnapshot.collection("users_db").doc(user.uid);
 
                       docRef.get().then(
                         (DocumentSnapshot userSnapshot) {
+                          final dataUserLogin =
+                              userSnapshot.data() as Map<String, dynamic>;
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => HomePageScreen(
                                         userSnapshot: userSnapshot,
+                                        dataUserLogin: dataUserLogin,
                                       )));
                           return userSnapshot;
                         },
                         onError: (e) => print("Error getting document: $e"),
                       );
-
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) {
-                        return HomePageScreen(userSnapshot: null);
-                      }));
                     } else {
                       print('USUARIO NULO');
                     }
@@ -142,5 +123,30 @@ class SocialIconLoginScreen extends StatelessWidget {
         )
       ],
     );
+  }
+
+  Future searchUserFirestor(User? user) async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    String? idUserLogin = user?.uid;
+    final docUser =
+        FirebaseFirestore.instance.collection('users_db').doc(idUserLogin);
+    final userSnapshot = await docUser.get();
+
+    if (userSnapshot.data() == null) {
+      firebase.collection('users_db').doc(user?.uid.toString()).set({
+        'id': user?.uid.toString(),
+        'name': user?.displayName.toString(),
+        'phone': user?.phoneNumber.toString(),
+        'email': user?.email.toString(),
+        'password': user?.displayName,
+        'photo': user?.photoURL.toString(),
+        'age': "Edad",
+        'birthday': "Cumpleaños",
+        'state': "null",
+        'gen': "Genero",
+        'roll': "user",
+      });
+    }
   }
 }

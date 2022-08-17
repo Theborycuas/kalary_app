@@ -1,7 +1,24 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+Future<User?> loginUsingEmailPassword(
+    {String? email, String? password, BuildContext? context}) async {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User? user;
+  try {
+    UserCredential userCredential = await auth.signInWithEmailAndPassword(
+        email: email.toString(), password: password.toString());
+    user = userCredential.user;
+  } on FirebaseAuthException catch (e) {
+    if (e.code == "user-not-found") {
+      print('NO EXISTE USUARIO PARA ESTE EMAIL');
+    }
+  }
+  return user;
+}
 
 class LoginWithGoogle {
   String TAG = "LoginGoogleUtils";

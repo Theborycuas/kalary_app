@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kalary_app/screen/list_user_screen.dart';
+import 'package:kalary_app/screen/users_screen/list_user_screen.dart';
 import 'package:kalary_app/theme/app_theme.dart';
 
-import '../functions/login_with_email_password.dart';
+import '../functions/login_functions.dart';
 
 class ButtonGlobalScreen extends StatelessWidget {
   ButtonGlobalScreen({Key? key, required this.email, required this.password})

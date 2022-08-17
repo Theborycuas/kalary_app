@@ -4,44 +4,26 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:kalary_app/screen/register_user_sceen.dart';
+import 'package:kalary_app/functions/login_functions.dart';
+import 'package:kalary_app/screen/login_screen/register_user_sceen.dart';
 import 'package:kalary_app/theme/app_theme.dart';
 import 'package:kalary_app/witgets/login_button.dart';
 import 'package:kalary_app/witgets/social_icon_login.dart';
 
-import '../witgets/text_form.dart';
-import 'home_page_sceen.dart';
-import 'list_user_screen.dart';
+import '../../witgets/text_form.dart';
+import '../home_sreen/home_page_sceen.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
   @override
   State<LoginScreen> createState() => _LoginScreenState();
-
-  static Future<User?> loginUsingEmailPassword(
-      {required String email,
-      required String password,
-      required BuildContext context}) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user;
-    try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      user = userCredential.user;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == "user-not-found") {
-        print('NO EXISTE USUARIO PARA ESTE EMAIL');
-      }
-    }
-    return user;
-  }
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController emailController = TextEditingController();
-
-  final TextEditingController passwordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   bool passwordVisible = true;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -152,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         keyboardType: TextInputType.visiblePassword,
                         textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
-                            hintText: 'Password',
+                            hintText: 'Contraseña',
                             suffixIcon: IconButton(
                               icon: Icon(passwordVisible
                                   ? Icons.visibility_off
@@ -181,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     InkWell(
                       onTap: () async {
-                        User? user = await LoginScreen.loginUsingEmailPassword(
+                        User? user = await loginUsingEmailPassword(
                             email: emailController.text,
                             password: passwordController.text,
                             context: context);
@@ -200,13 +182,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           docRef.get().then(
                             (DocumentSnapshot userSnapshot) {
-                              final data =
+                              final dataUserLogin =
                                   userSnapshot.data() as Map<String, dynamic>;
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => HomePageScreen(
-                                            data: data,
+                                            dataUserLogin: dataUserLogin,
                                             userSnapshot: userSnapshot,
                                           )));
 
@@ -220,6 +202,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           //         builder: (context) => HomePageScreen()));
                         } else {
                           print('NO SE ENCONTRO EL USUARIO');
+                          emailController.text = '';
+                          passwordController.text = '';
                         }
 
                         //LISTA DE USUARIOS

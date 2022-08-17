@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../theme/app_theme.dart';
-import '../witgets/login_button.dart';
-import '../witgets/social_icon_login.dart';
-import '../witgets/text_form.dart';
+import '../../theme/app_theme.dart';
+import '../../witgets/login_button.dart';
+import '../../witgets/social_icon_login.dart';
+import '../../witgets/text_form.dart';
 
 class UpdateScreen extends StatelessWidget {
   UpdateScreen({Key? key, required this.user_id}) : super(key: key);

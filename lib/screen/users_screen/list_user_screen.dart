@@ -5,11 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:kalary_app/screen/login_screen.dart';
-import 'package:kalary_app/screen/update_sceen.dart';
+import 'package:kalary_app/screen/users_screen/update_sceen.dart';
 
-import '../theme/app_theme.dart';
-import '../witgets/text_form.dart';
+import '../../theme/app_theme.dart';
+import '../../witgets/text_form.dart';
+import '../login_screen/login_screen.dart';
 
 class ListUserScreen extends StatelessWidget {
   final users = FirebaseFirestore.instance;

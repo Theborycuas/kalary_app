@@ -8,10 +8,11 @@ import '../../witgets/button_widget_profile.dart';
 import '../../witgets/numbersWidget.dart';
 import '../../witgets/profile_widget.dart';
 import '../../witgets/text_form.dart';
+import '../admin_screen/admin_page_screen.dart';
 
 class ProfileUserScreen extends StatelessWidget {
-  const ProfileUserScreen({Key? key, this.data}) : super(key: key);
-  final Map<String, dynamic>? data;
+  const ProfileUserScreen({Key? key, required this.data}) : super(key: key);
+  final Map<String, dynamic> data;
 
   @override
   Widget build(BuildContext context) {
@@ -37,28 +38,13 @@ class ProfileUserScreen extends StatelessWidget {
     );
   }
 
-  Widget buildUpgradeButton(BuildContext context, Map<String, dynamic>? data) {
-    return ButtonWidget(
-        text: 'EDITAR PERFIL',
-        onClicked: () {
-          //BUSCAR ID DE USUARIO LOGUEADO
-          // final FirebaseAuth auth = FirebaseAuth.instance;
-          // final User? user = auth.currentUser;
-          // final String? id = user?.uid;
-
-          upgradeUser(context, data);
-
-          // print(id.toString());
-        });
-  }
-
-  Widget buildAtributes(BuildContext context, Map<String, dynamic>? data) {
+  Widget buildAtributes(BuildContext context, Map<String, dynamic> data) {
     // final data = userSnapshot.data() as Map<String, dynamic>;
 
     return Column(
       children: [
         Text(
-          data!['name'],
+          data['name'],
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
         const SizedBox(
@@ -142,10 +128,20 @@ class ProfileUserScreen extends StatelessWidget {
           height: 20,
         ),
         Center(
-          child: buildUpgradeButton(context, data),
+          child: data['roll'] == 'admin'
+              ? buttonAdmin(context, data)
+              : buildUpgradeButton(context, data),
         ),
       ],
     );
+  }
+
+  Widget buildUpgradeButton(BuildContext context, Map<String, dynamic>? data) {
+    return ButtonWidget(
+        text: 'EDITAR PERFIL',
+        onClicked: () {
+          upgradeUser(context, data);
+        });
   }
 
   Future upgradeUser(BuildContext context, Map<String, dynamic>? data) {
@@ -277,6 +273,15 @@ class ProfileUserScreen extends StatelessWidget {
               ),
             ),
           );
+        });
+  }
+
+  Widget buttonAdmin(BuildContext context, Map<String, dynamic>? data) {
+    return ButtonWidget(
+        text: 'ADMINISTRAR SITIOS',
+        onClicked: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => AdminPageScreen()));
         });
   }
 }

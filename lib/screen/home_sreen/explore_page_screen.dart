@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:kalary_app/data/explore_json.dart';
 
-import '../data/icons.dart';
+import '../../data/icons.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({Key? key}) : super(key: key);

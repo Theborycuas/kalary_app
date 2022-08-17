@@ -5,39 +5,48 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kalary_app/screen/list_user_screen.dart';
-import 'package:kalary_app/screen/login_screen.dart';
+import 'package:kalary_app/screen/users_screen/list_user_screen.dart';
 import 'package:kalary_app/screen/users_screen/profile_user_screen.dart';
 import 'package:kalary_app/theme/app_theme.dart';
 
-import 'home_page_sceen.dart';
+import '../admin_screen/admin_page_screen.dart';
+import '../home_sreen/home_page_sceen.dart';
+import 'login_screen.dart';
 
-class SplashScreen extends StatelessWidget {
-  SplashScreen({Key? key, this.dataUserLogin}) : super(key: key);
-  Map<String, dynamic>? dataUserLogin;
+class SplashScreen extends StatefulWidget {
+  SplashScreen({Key? key, required this.dataUserLogin}) : super(key: key);
+  Map<String, dynamic> dataUserLogin;
 
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
   Future readUser() async {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     String? idUserLogin = user?.uid;
     final docUser =
         FirebaseFirestore.instance.collection('users_db').doc(idUserLogin);
-    final userSnapshot = await docUser.get();
-    dataUserLogin = userSnapshot.data();
-    print(dataUserLogin);
-    return dataUserLogin;
+    DocumentSnapshot<Map<String, dynamic>> userSnapshot;
+    userSnapshot = await docUser.get();
+    widget.dataUserLogin = userSnapshot.data()!;
+    print(widget.dataUserLogin);
+    return widget.dataUserLogin;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    readUser();
   }
 
   Widget _getLoadingPage() {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
-          readUser();
-
           if (snapshot.data != null) {
-            return HomePageScreen(
-              data: dataUserLogin,
-            );
+            return AdminPageScreen();
           } else {
             return LoginScreen();
           }
@@ -46,7 +55,7 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Timer(const Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 1), () {
       Get.to(() => _getLoadingPage());
     });
     return Scaffold(
