@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:kalary_app/screen/admin_screen/admin_page_screen.dart';
+import 'package:kalary_app/screen/admin_screen/provinces_screen.dart/list_provinces_screen.dart';
 import 'package:kalary_app/witgets/text_form.dart';
 
 class CreateProvincesScreen extends StatefulWidget {
@@ -13,7 +16,9 @@ class _CreateProvincesScreenState extends State<CreateProvincesScreen> {
 
   final TextEditingController stateProvinceControler = TextEditingController();
 
-  String dropdownValue = 'Activo';
+  String dropdownState = 'Activo';
+  String dropdownRegion = 'Costa';
+  FirebaseFirestore firebase = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -27,24 +32,31 @@ class _CreateProvincesScreenState extends State<CreateProvincesScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(
-              height: 20,
+              height: 220,
             ),
             Container(
               alignment: Alignment.center,
-              child: const Text('CREAR CIUDAD'),
+              child: const Text(
+                'CREAR PROVINCES',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
-            SizedBox(
-              height: 10,
+            const SizedBox(
+              height: 20,
             ),
             TextFormGlobalScreen(
                 controller: nameProvinceControler,
-                text: 'Nombre de la ciudad',
+                text: 'Nombre de la provincia',
                 textInputType: TextInputType.name,
                 obscure: false,
-                icon: Icons.assured_workload_rounded,
-                textCap: TextCapitalization.none),
-            SizedBox(
-              height: 10,
+                icon: Icons.map,
+                textCap: TextCapitalization.words),
+            const SizedBox(
+              height: 15,
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: Text('Estado de la Provincia'),
             ),
             Center(
               child: DropdownButton(
@@ -56,13 +68,70 @@ class _CreateProvincesScreenState extends State<CreateProvincesScreen> {
                     );
                   }).toList(),
                   elevation: 15,
-                  value: dropdownValue,
-                  onChanged: (String? valueIn) {
+                  value: dropdownState,
+                  onChanged: (String? valueState) {
                     setState(() {
-                      dropdownValue = valueIn!;
+                      dropdownState = valueState!;
                     });
                   }),
-            )
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: Text('Region de la Provincia'),
+            ),
+            Center(
+              child: DropdownButton(
+                  items: <String>['Costa', 'Sierra', 'Amazonía', 'Insular']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      child: Text(value),
+                      value: value,
+                    );
+                  }).toList(),
+                  elevation: 15,
+                  value: dropdownRegion,
+                  onChanged: (String? valueState) {
+                    setState(() {
+                      dropdownRegion = valueState!;
+                    });
+                  }),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Center(
+              child: ElevatedButton(
+                child: const Text('Guardar'),
+                style: ElevatedButton.styleFrom(
+                    shape: const StadiumBorder(),
+                    onPrimary: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 70,
+                      vertical: 12,
+                    )),
+                onPressed: () {
+                  if (nameProvinceControler.text == 'null') {
+                  } else {
+                    firebase
+                        .collection('provinces_db')
+                        .doc(nameProvinceControler.text)
+                        .set({
+                      'province_name': nameProvinceControler.text,
+                      'province_state': dropdownState.toString(),
+                      'province_region': dropdownRegion.toString()
+                    });
+                    nameProvinceControler.text = '';
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ListProvincesScreen()));
+                  }
+                },
+              ),
+            ),
           ],
         ),
       )),

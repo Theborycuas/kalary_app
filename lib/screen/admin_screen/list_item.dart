@@ -1,8 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:kalary_app/screen/admin_screen/cities_screen/list_cities.dart';
 import 'package:kalary_app/screen/admin_screen/provinces_screen.dart/list_provinces_screen.dart';
 
-class ListItemWidget extends StatelessWidget {
-  const ListItemWidget({Key? key}) : super(key: key);
+class ListItemWidget extends StatefulWidget {
+  ListItemWidget({Key? key}) : super(key: key);
+
+  @override
+  State<ListItemWidget> createState() => _ListItemWidgetState();
+}
+
+class _ListItemWidgetState extends State<ListItemWidget> {
+  FirebaseFirestore provinces = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -180,7 +190,12 @@ class ListItemWidget extends StatelessWidget {
               ),
               buildDivider(),
               MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ListCitiesScreen()));
+                },
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -201,32 +216,42 @@ class ListItemWidget extends StatelessWidget {
                 ),
               ),
               buildDivider(),
-              MaterialButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ListProvincesScreen()));
-                },
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: const <Widget>[
-                    Text(
-                      '150',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Text(
-                      'Provincias',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-              ),
+              StreamBuilder(
+                  stream: provinces.collection('provinces_db').snapshots(),
+                  builder: (context,
+                      AsyncSnapshot<QuerySnapshot> province_snapshot) {
+                    if (province_snapshot.hasData) {
+                      return MaterialButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ListProvincesScreen()));
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              province_snapshot.data!.docs.length.toString(),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                            const SizedBox(
+                              height: 2,
+                            ),
+                            const Text(
+                              'Provincias',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
+                      );
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }),
             ],
           ),
         ],
