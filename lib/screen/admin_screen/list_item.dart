@@ -12,7 +12,7 @@ class ListItemWidget extends StatefulWidget {
 }
 
 class _ListItemWidgetState extends State<ListItemWidget> {
-  FirebaseFirestore provinces = FirebaseFirestore.instance;
+  FirebaseFirestore generalInstance = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -189,38 +189,48 @@ class _ListItemWidgetState extends State<ListItemWidget> {
                 ),
               ),
               buildDivider(),
-              MaterialButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ListCitiesScreen()));
-                },
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: const <Widget>[
-                    Text(
-                      '80',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Text(
-                      'Ciudades',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-              ),
+              StreamBuilder(
+                  stream: generalInstance.collection('cities_db').snapshots(),
+                  builder:
+                      (context, AsyncSnapshot<QuerySnapshot> citySnapshot) {
+                    if (citySnapshot.hasData) {
+                      return MaterialButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ListCitiesScreen()));
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              citySnapshot.data!.docs.length.toString(),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                            const SizedBox(
+                              height: 2,
+                            ),
+                            const Text(
+                              'Ciudades',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  }),
               buildDivider(),
               StreamBuilder(
-                  stream: provinces.collection('provinces_db').snapshots(),
-                  builder: (context,
-                      AsyncSnapshot<QuerySnapshot> province_snapshot) {
-                    if (province_snapshot.hasData) {
+                  stream:
+                      generalInstance.collection('provinces_db').snapshots(),
+                  builder:
+                      (context, AsyncSnapshot<QuerySnapshot> provinceSnapshot) {
+                    if (provinceSnapshot.hasData) {
                       return MaterialButton(
                         onPressed: () {
                           Navigator.push(
@@ -233,7 +243,7 @@ class _ListItemWidgetState extends State<ListItemWidget> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              province_snapshot.data!.docs.length.toString(),
+                              provinceSnapshot.data!.docs.length.toString(),
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),

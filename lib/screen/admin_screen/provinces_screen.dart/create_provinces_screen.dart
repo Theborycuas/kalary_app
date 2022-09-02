@@ -18,7 +18,7 @@ class _CreateProvincesScreenState extends State<CreateProvincesScreen> {
 
   String dropdownState = 'Activo';
   String dropdownRegion = 'Costa';
-  FirebaseFirestore firebase = FirebaseFirestore.instance;
+  FirebaseFirestore provincesInstance = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -114,8 +114,9 @@ class _CreateProvincesScreenState extends State<CreateProvincesScreen> {
                     )),
                 onPressed: () {
                   if (nameProvinceControler.text == 'null') {
+                    //VALIDAR
                   } else {
-                    firebase
+                    provincesInstance
                         .collection('provinces_db')
                         .doc(nameProvinceControler.text)
                         .set({
