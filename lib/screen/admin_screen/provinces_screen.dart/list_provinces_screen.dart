@@ -51,7 +51,10 @@ class _ListProvincesScreenState extends State<ListProvincesScreen> {
                               onPressed: () {
                                 deleteProvinces(provincesSnapshot);
                               },
-                              icon: Icon(Icons.delete))
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ))
                         ],
                       ),
                     ),
@@ -94,110 +97,111 @@ class _ListProvincesScreenState extends State<ListProvincesScreen> {
         builder: (BuildContext contex) {
           return AlertDialog(
             title: Center(child: Text('Editar Provincia')),
-            content: Container(
-              height: 350,
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
+            content: StatefulBuilder(
+              builder: ((context, setState) {
+                return Container(
+                  height: 350,
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
 
-                  ///NAME
-                  TextFormGlobalScreen(
-                    controller: nameProvinceControler,
-                    text: 'Nombres',
-                    textInputType: TextInputType.name,
-                    obscure: false,
-                    icon: Icons.map,
-                    textCap: TextCapitalization.words,
+                      ///NAME
+                      TextFormGlobalScreen(
+                        controller: nameProvinceControler,
+                        text: 'Nombres',
+                        textInputType: TextInputType.name,
+                        obscure: false,
+                        icon: Icons.map,
+                        textCap: TextCapitalization.words,
+                      ),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        child: Text('Estado de la Provincia'),
+                      ),
+                      Center(
+                        child: DropdownButton(
+                            items: <String>['Activo', 'No Activo']
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                child: Text(value),
+                                value: value,
+                              );
+                            }).toList(),
+                            elevation: 15,
+                            value: dropdownState,
+                            onChanged: (String? valueState) {
+                              setState(() {
+                                dropdownState = valueState!;
+                              });
+                            }),
+                      ),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        child: Text('Region de la Provincia'),
+                      ),
+                      Center(
+                        child: DropdownButton(
+                            items: <String>[
+                              'Costa',
+                              'Sierra',
+                              'Amazonía',
+                              'Insular'
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                child: Text(value),
+                                value: value,
+                              );
+                            }).toList(),
+                            elevation: 15,
+                            value: dropdownRegion,
+                            onChanged: (String? valueState) {
+                              setState(() {
+                                dropdownRegion = valueState!;
+                              });
+                            }),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Center(
+                        child: ElevatedButton(
+                          child: const Text('Guardar'),
+                          style: ElevatedButton.styleFrom(
+                              shape: const StadiumBorder(),
+                              onPrimary: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 70,
+                                vertical: 12,
+                              )),
+                          onPressed: () {
+                            if (nameProvinceControler.text == 'null') {
+                            } else {
+                              provinces
+                                  .collection('provinces_db')
+                                  .doc(provinceSnapshot.id)
+                                  .set({
+                                'province_name': nameProvinceControler.text,
+                                'province_state': dropdownState.toString(),
+                                'province_region': dropdownRegion.toString()
+                              });
+                              //VALIDAR
+                              Navigator.pop(contex);
+                            }
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text('Estado de la Provincia'),
-                  ),
-                  Center(
-                    child: DropdownButton(
-                        items: <String>['Activo', 'No Activo']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            child: Text(value),
-                            value: value,
-                          );
-                        }).toList(),
-                        elevation: 15,
-                        value: dropdownState,
-                        onChanged: (String? valueState) {
-                          setState(() {
-                            dropdownState = valueState!;
-                          });
-                        }),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text('Region de la Provincia'),
-                  ),
-                  Center(
-                    child: DropdownButton(
-                        items: <String>[
-                          'Costa',
-                          'Sierra',
-                          'Amazonía',
-                          'Insular'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            child: Text(value),
-                            value: value,
-                          );
-                        }).toList(),
-                        elevation: 15,
-                        value: dropdownRegion,
-                        onChanged: (String? valueState) {
-                          setState(() {
-                            dropdownRegion = valueState!;
-                          });
-                        }),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Center(
-                    child: ElevatedButton(
-                      child: const Text('Guardar'),
-                      style: ElevatedButton.styleFrom(
-                          shape: const StadiumBorder(),
-                          onPrimary: Colors.white,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 70,
-                            vertical: 12,
-                          )),
-                      onPressed: () {
-                        if (nameProvinceControler.text == 'null') {
-                        } else {
-                          provinces
-                              .collection('provinces_db')
-                              .doc(provinceSnapshot.id)
-                              .set({
-                            'province_name': nameProvinceControler.text,
-                            'province_state': dropdownState.toString(),
-                            'province_region': dropdownRegion.toString()
-                          });
-                          nameProvinceControler.text = '';
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ListProvincesScreen()));
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              ),
+                );
+              }),
             ),
           );
         });
