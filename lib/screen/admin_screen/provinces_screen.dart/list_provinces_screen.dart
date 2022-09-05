@@ -115,6 +115,7 @@ class _ListProvincesScreenState extends State<ListProvincesScreen> {
                         obscure: false,
                         icon: Icons.map,
                         textCap: TextCapitalization.words,
+                        maxlines: 1,
                       ),
                       const SizedBox(
                         height: 25,

@@ -7,21 +7,23 @@ class TextFormGlobalScreen extends StatelessWidget {
   final bool obscure;
   final IconData icon;
   final TextCapitalization textCap;
+  final int maxlines;
 
-  const TextFormGlobalScreen(
-      {Key? key,
-      required this.controller,
-      required this.text,
-      required this.textInputType,
-      required this.obscure,
-      required this.icon,
-      required this.textCap})
-      : super(key: key);
+  const TextFormGlobalScreen({
+    Key? key,
+    required this.controller,
+    required this.text,
+    required this.textInputType,
+    required this.obscure,
+    required this.icon,
+    required this.textCap,
+    required this.maxlines,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 55,
+      height: maxlines == 1 ? 55 : 100,
       padding: const EdgeInsets.only(top: 3, left: 15),
       decoration: BoxDecoration(
           color: Colors.white,
@@ -37,6 +39,7 @@ class TextFormGlobalScreen extends StatelessWidget {
         keyboardType: textInputType,
         textCapitalization: textCap,
         obscureText: obscure,
+        maxLines: maxlines,
         decoration: InputDecoration(
             hintText: text,
             suffixIcon: Icon(icon),

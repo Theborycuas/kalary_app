@@ -114,6 +114,7 @@ class UpdateScreen extends StatelessWidget {
                 obscure: false,
                 icon: Icons.person,
                 textCap: TextCapitalization.words,
+                maxlines: 1,
               ),
               const SizedBox(
                 height: 10,
@@ -127,6 +128,7 @@ class UpdateScreen extends StatelessWidget {
                 obscure: false,
                 icon: Icons.phone,
                 textCap: TextCapitalization.none,
+                maxlines: 1,
               ),
               const SizedBox(
                 height: 10,
@@ -140,6 +142,7 @@ class UpdateScreen extends StatelessWidget {
                 obscure: false,
                 icon: Icons.email,
                 textCap: TextCapitalization.none,
+                maxlines: 1,
               ),
               const SizedBox(
                 height: 10,
@@ -153,6 +156,7 @@ class UpdateScreen extends StatelessWidget {
                 obscure: true,
                 icon: Icons.password,
                 textCap: TextCapitalization.none,
+                maxlines: 1,
               ),
               const SizedBox(
                 height: 10,
@@ -166,6 +170,7 @@ class UpdateScreen extends StatelessWidget {
                 obscure: true,
                 icon: Icons.password,
                 textCap: TextCapitalization.none,
+                maxlines: 1,
               ),
               const SizedBox(
                 height: 25,
@@ -229,6 +234,7 @@ Future<Null> _actualizardialog(BuildContext context, DocumentSnapshot user) {
                 obscure: false,
                 icon: Icons.person,
                 textCap: TextCapitalization.words,
+                maxlines: 1,
               ),
               const SizedBox(
                 height: 10,
@@ -242,6 +248,7 @@ Future<Null> _actualizardialog(BuildContext context, DocumentSnapshot user) {
                 obscure: false,
                 icon: Icons.phone,
                 textCap: TextCapitalization.none,
+                maxlines: 1,
               ),
               const SizedBox(
                 height: 10,
@@ -255,6 +262,7 @@ Future<Null> _actualizardialog(BuildContext context, DocumentSnapshot user) {
                 obscure: false,
                 icon: Icons.email,
                 textCap: TextCapitalization.none,
+                maxlines: 1,
               ),
               const SizedBox(
                 height: 10,

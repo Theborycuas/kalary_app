@@ -109,6 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscure: false,
                       icon: Icons.email,
                       textCap: TextCapitalization.none,
+                      maxlines: 1,
                     ),
                     const SizedBox(
                       height: 10,

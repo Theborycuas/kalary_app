@@ -45,6 +45,7 @@ class _CreateCategoriesScreenState extends State<CreateCategoriesScreen> {
               obscure: false,
               icon: Icons.category,
               textCap: TextCapitalization.words,
+              maxlines: 1,
             ),
             const SizedBox(
               height: 20,

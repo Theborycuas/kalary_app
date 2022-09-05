@@ -3,7 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kalary_app/screen/admin_screen/categories_screen/list_categories_screen.dart';
 import 'package:kalary_app/screen/admin_screen/cities_screen/list_cities.dart';
+import 'package:kalary_app/screen/admin_screen/places_sceen/list_places_screen.dart';
 import 'package:kalary_app/screen/admin_screen/provinces_screen.dart/list_provinces_screen.dart';
+import 'package:kalary_app/screen/users_screen/list_user_screen.dart';
 
 class AdminListItemWidget extends StatefulWidget {
   AdminListItemWidget({Key? key}) : super(key: key);
@@ -58,27 +60,46 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              MaterialButton(
-                onPressed: () {},
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: const <Widget>[
-                    Text(
-                      '24',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Text(
-                      'Usuarios',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-              ),
+              StreamBuilder(
+                  stream: generalInstance.collection('users_db').snapshots(),
+                  builder:
+                      (context, AsyncSnapshot<QuerySnapshot> userSnapshot) {
+                    if (userSnapshot.hasData) {
+                      return MaterialButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ListUserScreen()),
+                          );
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              userSnapshot.data!.docs.length.toString(),
+                              style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              'Usuarios',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
+                      );
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  }),
               buildDivider(),
               StreamBuilder(
                   stream:
@@ -101,7 +122,9 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
                             Text(
                               categorySnapshot.data!.docs.length.toString(),
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
                             ),
                             SizedBox(
                               height: 2,
@@ -128,8 +151,10 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
                   children: const <Widget>[
                     Text(
                       '150',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
                     ),
                     SizedBox(
                       height: 2,
@@ -186,7 +211,7 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ListProvincesScreen()));
+                          builder: (context) => ListPlacesScreen()));
                 },
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -194,15 +219,19 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
                   children: const <Widget>[
                     Text(
                       '24',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      style: TextStyle(
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
                     ),
                     SizedBox(
                       height: 2,
                     ),
                     Text(
                       'Sitios',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     )
                   ],
                 ),
@@ -227,7 +256,9 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
                             Text(
                               citySnapshot.data!.docs.length.toString(),
                               style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
                             ),
                             const SizedBox(
                               height: 2,
@@ -264,7 +295,9 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
                             Text(
                               provinceSnapshot.data!.docs.length.toString(),
                               style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
                             ),
                             const SizedBox(
                               height: 2,

@@ -55,6 +55,9 @@ class ListUserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text('Lista de Usuarios Registrados'),
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             signOut();
@@ -78,7 +81,7 @@ class ListUserScreen extends StatelessWidget {
                     margin: const EdgeInsets.all(10),
                     child: ListTile(
                       title: Text(documentSnapshot['name']),
-                      subtitle: Text(documentSnapshot['phone'].toString()),
+                      subtitle: Text(documentSnapshot['roll'].toString()),
                       trailing: SizedBox(
                         width: 100,
                         child: Row(
@@ -141,6 +144,7 @@ Future<Null> _actualizardialog(BuildContext context, DocumentSnapshot user) {
                   obscure: false,
                   icon: Icons.person,
                   textCap: TextCapitalization.words,
+                  maxlines: 1,
                 ),
                 const SizedBox(
                   height: 10,
@@ -154,6 +158,7 @@ Future<Null> _actualizardialog(BuildContext context, DocumentSnapshot user) {
                   obscure: false,
                   icon: Icons.phone,
                   textCap: TextCapitalization.none,
+                  maxlines: 1,
                 ),
                 const SizedBox(
                   height: 10,
@@ -167,6 +172,7 @@ Future<Null> _actualizardialog(BuildContext context, DocumentSnapshot user) {
                   obscure: false,
                   icon: Icons.email,
                   textCap: TextCapitalization.none,
+                  maxlines: 1,
                 ),
                 const SizedBox(
                   height: 10,

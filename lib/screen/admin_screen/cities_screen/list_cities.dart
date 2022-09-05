@@ -113,6 +113,7 @@ class _ListCitiesScreenState extends State<ListCitiesScreen> {
                       obscure: false,
                       icon: Icons.map,
                       textCap: TextCapitalization.words,
+                      maxlines: 1,
                     ),
                     const SizedBox(
                       height: 25,
