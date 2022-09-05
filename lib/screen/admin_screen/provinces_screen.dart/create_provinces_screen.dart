@@ -124,7 +124,7 @@ class _CreateProvincesScreenState extends State<CreateProvincesScreen> {
                       'province_state': dropdownState.toString(),
                       'province_region': dropdownRegion.toString()
                     });
-                    nameProvinceControler.text = '';
+                    //VALIDAR
                     Navigator.push(
                         context,
                         MaterialPageRoute(

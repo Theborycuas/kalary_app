@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kalary_app/screen/admin_screen/list_item.dart';
+import 'package:kalary_app/screen/admin_screen/admin_list_item_screen.dart';
 
 class AdminPageScreen extends StatelessWidget {
   const AdminPageScreen({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class AdminPageScreen extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            ListItemWidget(),
+            AdminListItemWidget(),
           ],
         ),
       ),

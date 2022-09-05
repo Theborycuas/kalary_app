@@ -1,17 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:kalary_app/screen/admin_screen/categories_screen/list_categories_screen.dart';
 import 'package:kalary_app/screen/admin_screen/cities_screen/list_cities.dart';
 import 'package:kalary_app/screen/admin_screen/provinces_screen.dart/list_provinces_screen.dart';
 
-class ListItemWidget extends StatefulWidget {
-  ListItemWidget({Key? key}) : super(key: key);
+class AdminListItemWidget extends StatefulWidget {
+  AdminListItemWidget({Key? key}) : super(key: key);
 
   @override
-  State<ListItemWidget> createState() => _ListItemWidgetState();
+  State<AdminListItemWidget> createState() => _AdminListItemWidgetState();
 }
 
-class _ListItemWidgetState extends State<ListItemWidget> {
+class _AdminListItemWidgetState extends State<AdminListItemWidget> {
   FirebaseFirestore generalInstance = FirebaseFirestore.instance;
 
   @override
@@ -79,27 +80,45 @@ class _ListItemWidgetState extends State<ListItemWidget> {
                 ),
               ),
               buildDivider(),
-              MaterialButton(
-                onPressed: () {},
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: const <Widget>[
-                    Text(
-                      '80',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Text(
-                      'Categorías',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-              ),
+              StreamBuilder(
+                  stream:
+                      generalInstance.collection('categories_db').snapshots(),
+                  builder:
+                      (context, AsyncSnapshot<QuerySnapshot> categorySnapshot) {
+                    if (categorySnapshot.hasData) {
+                      return MaterialButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ListCategoriesScreen()));
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              categorySnapshot.data!.docs.length.toString(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              'Categorías',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
+                      );
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  }),
               buildDivider(),
               MaterialButton(
                 onPressed: () {},
