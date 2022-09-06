@@ -206,36 +206,47 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              MaterialButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ListPlacesScreen()));
-                },
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: const <Widget>[
-                    Text(
-                      '24',
-                      style: TextStyle(
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Text(
-                      'Sitios',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              StreamBuilder(
+                  stream: generalInstance.collection('places_db').snapshots(),
+                  builder:
+                      (context, AsyncSnapshot<QuerySnapshot> placeSnapshot) {
+                    if (placeSnapshot.hasData) {
+                      return MaterialButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ListPlacesScreen()));
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              placeSnapshot.data!.docs.length.toString(),
+                              style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              'Sitios',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  }),
               buildDivider(),
               StreamBuilder(
                   stream: generalInstance.collection('cities_db').snapshots(),
