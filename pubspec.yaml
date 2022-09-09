@@ -38,11 +38,13 @@ dependencies:
   hexcolor: ^2.0.7
   flutter_svg: ^1.1.1+1
   flutter_tindercard: ^0.2.0
-  firebase_core:
-  cloud_firestore:
+  firebase_core: ^1.21.1
+  cloud_firestore: ^3.4.6
   flutter_auth_buttons: ^0.10.0
   google_sign_in: ^5.4.0
   firebase_auth: ^3.6.1
+  image_picker: ^0.8.5+3
+  firebase_storage: ^10.3.7
 
 dev_dependencies:
   flutter_test:

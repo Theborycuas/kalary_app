@@ -22,7 +22,7 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
     return IntrinsicHeight(
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -34,7 +34,7 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
                   child: Divider(
                     color: Colors.black,
                   )),
-              SizedBox(
+              const SizedBox(
                 width: 50,
               ),
               Container(
@@ -43,7 +43,7 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
                   child: Divider(
                     color: Colors.black,
                   )),
-              SizedBox(
+              const SizedBox(
                 width: 50,
               ),
               Container(
@@ -54,7 +54,7 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
                   )),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Row(
@@ -79,15 +79,15 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
                           children: <Widget>[
                             Text(
                               userSnapshot.data!.docs.length.toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 2,
                             ),
-                            Text(
+                            const Text(
                               'Usuarios',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             )
@@ -95,7 +95,7 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
                         ),
                       );
                     } else {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     }
@@ -121,15 +121,15 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
                           children: <Widget>[
                             Text(
                               categorySnapshot.data!.docs.length.toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 2,
                             ),
-                            Text(
+                            const Text(
                               'Categorías',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             )
@@ -137,7 +137,7 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
                         ),
                       );
                     } else {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     }
@@ -168,7 +168,7 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -180,7 +180,7 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
                   child: Divider(
                     color: Colors.black,
                   )),
-              SizedBox(
+              const SizedBox(
                 width: 50,
               ),
               Container(
@@ -189,18 +189,18 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
                   child: Divider(
                     color: Colors.black,
                   )),
-              SizedBox(
+              const SizedBox(
                 width: 50,
               ),
               Container(
                   height: 5,
                   width: 50,
-                  child: Divider(
+                  child: const Divider(
                     color: Colors.black,
                   )),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -224,15 +224,15 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
                           children: <Widget>[
                             Text(
                               placeSnapshot.data!.docs.length.toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 2,
                             ),
-                            Text(
+                            const Text(
                               'Sitios',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -242,7 +242,7 @@ class _AdminListItemWidgetState extends State<AdminListItemWidget> {
                         ),
                       );
                     } else {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     }

@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kalary_app/screen/admin_screen/places_sceen/create_places.dart';
 
 import '../../../witgets/text_form.dart';
+import 'package:path/path.dart' as path;
 
 class ListPlacesScreen extends StatefulWidget {
   ListPlacesScreen({Key? key}) : super(key: key);
@@ -13,6 +18,9 @@ class ListPlacesScreen extends StatefulWidget {
 
 class _ListPlacesScreenState extends State<ListPlacesScreen> {
   FirebaseFirestore placesInstance = FirebaseFirestore.instance;
+  XFile? imageFileUpload;
+  String? urlImage;
+  String? placePrincipalImage;
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +100,7 @@ class _ListPlacesScreenState extends State<ListPlacesScreen> {
     String dropdownState = placeSnapshot['place_state'];
     String? dropdownCity = placeSnapshot['place_city'];
     String? dropdownCategory = placeSnapshot['place_category'];
+    placePrincipalImage = placeSnapshot['place_principal_image'];
 
     return showDialog(
         context: context,
@@ -130,6 +139,40 @@ class _ListPlacesScreenState extends State<ListPlacesScreen> {
                           icon: Icons.mode_night_outlined,
                           textCap: TextCapitalization.words,
                           maxlines: 1,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Imagen Principal',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Center(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: 150,
+                            height: 150,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.white,
+                              ),
+                              //HAY QUE ARREGLAR
+                              child: placePrincipalImage == ""
+                                  ? noImage()
+                                  : uploadArea(placePrincipalImage.toString()),
+                              onPressed: () {
+                                _getImageGalery();
+                              },
+                            ),
+                          ),
                         ),
                         const SizedBox(
                           height: 20,
@@ -337,6 +380,7 @@ class _ListPlacesScreenState extends State<ListPlacesScreen> {
                                     .doc(placeSnapshot.id)
                                     .set({
                                   'place_name': namePlaceController.text,
+                                  'place_principal_image': urlImage.toString(),
                                   'place_city': dropdownCity.toString(),
                                   'place_location':
                                       locationPlaceController.text,
@@ -363,5 +407,72 @@ class _ListPlacesScreenState extends State<ListPlacesScreen> {
   Future<void> deleteSitios(DocumentSnapshot placeSnapshot) async {
     FirebaseFirestore places = FirebaseFirestore.instance;
     await places.collection('places_db').doc(placeSnapshot.id).delete();
+  }
+
+  Widget noImage() {
+    return Column(
+      children: [
+        const Image(
+          image: AssetImage('assets/img/galery.png'),
+          width: 150,
+          height: 150,
+        ),
+      ],
+    );
+  }
+
+  Widget uploadArea(String place_image) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          FadeInImage(
+            placeholder: const AssetImage('assets/img/jar-loading.gif'),
+            image: NetworkImage(place_image),
+            width: double.infinity,
+            height: 150.00,
+            fit: BoxFit.cover,
+            fadeInDuration: const Duration(milliseconds: 100),
+          )
+        ],
+      ),
+    );
+  }
+
+  Future _getImageGalery() async {
+    ImagePicker _picker = ImagePicker();
+    var tempImage = await _picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    setState(() {
+      imageFileUpload = tempImage;
+      uploadImageStorage();
+
+      placePrincipalImage = urlImage.toString();
+    });
+  }
+
+  void uploadImageStorage() async {
+    final String fileName = path.basename(imageFileUpload!.path);
+    final Reference storageImage =
+        FirebaseStorage.instance.ref().child(fileName);
+    final imageFileFile = File(imageFileUpload!.path);
+    // await storageImage.putFile(
+    //   imageFileFile,
+    //   SettableMetadata(customMetadata: {
+    //     'uploaded_by': 'Borys Espinoza',
+    //     'description': 'Hello world'
+    //   }),
+    // );
+    UploadTask uploadTask = storageImage.putFile(
+      imageFileFile,
+      SettableMetadata(
+        customMetadata: {
+          'uploaded_by': 'Borys Espinoza',
+          'description': 'Hello world',
+        },
+      ),
+    );
+    var dowUrl = await (await uploadTask).ref.getDownloadURL();
+    urlImage = dowUrl.toString();
   }
 }

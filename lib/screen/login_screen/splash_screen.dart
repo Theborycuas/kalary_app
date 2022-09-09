@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kalary_app/screen/admin_screen/places_sceen/list_places_screen.dart';
 import 'package:kalary_app/screen/users_screen/list_user_screen.dart';
 import 'package:kalary_app/screen/users_screen/profile_user_screen.dart';
 import 'package:kalary_app/theme/app_theme.dart';
@@ -46,7 +47,8 @@ class _SplashScreenState extends State<SplashScreen> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
           if (snapshot.data != null) {
-            return AdminPageScreen();
+            return ListPlacesScreen();
+            // return AdminPageScreen();
           } else {
             return LoginScreen();
           }
